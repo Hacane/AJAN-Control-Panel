@@ -30,3 +30,4 @@ once done with work, the user can close AJAN and its subcomponents simply by cli
 this application may need internet during the configurations and for providing the pre requisites 
 this application does not need internet for starting the editor
 the app does not need to stay open to keep AJAN running
+starting of AJAN editor may take around 4 to 10 min
