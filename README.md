@@ -4,7 +4,7 @@ this is the control panel of AJAN Project
 
 The user interface provides the necessary functionalities for running AJAN without any need for developer tools.
 this user interface provides the following functionalities:
-- checking the pre requisites of AJAN such as the required JAVA version etc.
+- checking the pre requisites of AJAN such as the required JAVA version etc...
 - providing the installations for the missing pre requisites
 - making the configurations needed before launching AJAN
 - using the pre requisites without the need for adding them to the variables path
