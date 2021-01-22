@@ -1,6 +1,6 @@
 **** General Information****
 
-this is the control panel of AJAN Project 
+this is the control panel of AJAN Project. 
 
 The user interface provides the necessary functionalities for running AJAN without any need for developer tools.
 this user interface provides the following functionalities:
