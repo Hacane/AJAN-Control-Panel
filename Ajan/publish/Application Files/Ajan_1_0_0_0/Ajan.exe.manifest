@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="Ajan.exe" version="1.0.0.0" publicKeyToken="b64d76c2f4cf33e6" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="Ajan" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="Ajan.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="43928">
+      <assemblyIdentity name="Ajan" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>/VebQvHjse4GAy8pxlgSBvFmhjurqJtXzTXdpCgAVjY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Ajan.exe.config" size="189">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R+Wg8QGvQVHX8T0ta/qbhH1bXkqY0fRnS3wBV3J0bN8=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=MSI\hacan" issuerKeyHash="3d8dedea8866840ff6e180da7e6527309bc6182e" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>G1tqRIOAHBJj7kyIRJ5cyE2Vo42wyFtzcCzUF2e/qWw=</DigestValue></Reference></SignedInfo><SignatureValue>hUZ9OHwuBCpGyIdAoHrfrSnmA1T8oNsfv+74TrfEl5x+cE9Vsfm9c3wJdQGO8IePVJ3k6vlZDKZgUNiGVuNX58Q0C191hvdhwhuleW18DT8uE+0dXBz8b5hsNx6xa6JKjarwVk9y6FlPOTzAdrMIV38ALWW68GpunPinNjKJoYs=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>sas+gAounmu6RbBi3+JS362LoKSAOnMdx+bITPa4i50VYlEhd+pUmEFiroeFsK+CHXgpofumClAThDCStYPJezp/j6yRyF/sKbAYj9J4hF2ENTBJpeOIDErraXw/FRCinOKjWITvfvzr9TmdJIDx5BlwfISWmDAWstw9bjpepkk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="6ca9bf6717d42c70735bc8b08da3954dc85c9e44884cee63121c8083446a5b1b" Description="" Url=""><as:assemblyIdentity name="Ajan.exe" version="1.0.0.0" publicKeyToken="b64d76c2f4cf33e6" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=MSI\hacan</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>qHAADTrw+URicA+hUUT3Q9V/fuxQ2Qp7XGVLN266UdQ=</DigestValue></Reference></SignedInfo><SignatureValue>UvDI/Kw0EcqWpUkPsE51OwH24L4W56ze60D3tpLl/Up+og5lzJr4PQ2xFW9SViYmSXNMTrWVyBqlVZrZXRAkSLXtj1SCE7AjE1nh2mUTnHh1ogcuWm4xeDgM1AvshozllsdG507fqXbHaGYPeun6XdHipjzyz3KL0e0aixpQwU8=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>sas+gAounmu6RbBi3+JS362LoKSAOnMdx+bITPa4i50VYlEhd+pUmEFiroeFsK+CHXgpofumClAThDCStYPJezp/j6yRyF/sKbAYj9J4hF2ENTBJpeOIDErraXw/FRCinOKjWITvfvzr9TmdJIDx5BlwfISWmDAWstw9bjpepkk=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBvTCCASagAwIBAgIQHOtNptT85ZFEgV94O/Q3OjANBgkqhkiG9w0BAQsFADAdMRswGQYDVQQDHhIATQBTAEkAXABoAGEAYwBhAG4wHhcNMjAxMTMwMjIyMjEwWhcNMjExMjAxMDQyMjEwWjAdMRswGQYDVQQDHhIATQBTAEkAXABoAGEAYwBhAG4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALGrPoAKLp5rukWwYt/iUt+ti6CkgDpzHcfmyEz2uIudFWJRIXfqVJhBYq6HhbCvgh14KaH7pgpQE4QwkrWDyXs6f4+skchf7CmwGI/SeIRdhDUwSaXjiAxK62l8PxUQopzio1iE73786/U5nSSA8eQZcHyElpgwFrLcPW46XqZJAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAUyrHIGXv17HF68MyrJB+Fl1PN3Sf6zJPhmaW8RYJ+5Acc9N4Ux4J51GKnnzmsmWAVTmC+NlO6WudvJhTK92bbCZL7MKJmUwP6jxY7kXRqm6srGNugLwkW4BYupDOhWU3xmcYuft9nEaM7NmScCMoqltwNgBSwH18cSYfKaJ53lU=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
