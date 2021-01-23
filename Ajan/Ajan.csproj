@@ -157,7 +157,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Resource Include="greenTick.png" />
   </ItemGroup>
   <ItemGroup>
@@ -165,15 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="min-01.png" />
-=======
-    <Resource Include="08-512.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="greenTick.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="redCross.png" />
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

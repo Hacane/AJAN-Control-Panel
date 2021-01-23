@@ -8,10 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-<<<<<<< HEAD
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("tick-01.png")]
-=======
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("redcross.png")]
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
 

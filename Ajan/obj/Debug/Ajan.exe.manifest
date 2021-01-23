@@ -42,22 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-<<<<<<< HEAD
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="81816">
-=======
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="229272">
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
       <assemblyIdentity name="Ajan" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>isTikX9M3OFvQXAUajntTKHHSFoOTsOli6SgVmOoeVA=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>01wo++Cf32g/WYzl0swqhiyxd3vuUJHjDdndkmWp5O8=</dsig:DigestValue>
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
+        <dsig:DigestValue>S+rhEQfZXQ7tws9ACTcNLM45lqV42UDMgD/CW/+JOsY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -121,21 +113,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-<<<<<<< HEAD
   <file name="Ajan.exe.config" size="184">
-=======
-  <file name="Ajan.exe.config" size="189">
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
       <dsig:DigestValue>X+GtgC9o18R9u9jmAWK6iKuu0WLaXTgchdPkk1MRli4=</dsig:DigestValue>
-=======
-      <dsig:DigestValue>R+Wg8QGvQVHX8T0ta/qbhH1bXkqY0fRnS3wBV3J0bN8=</dsig:DigestValue>
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
     </hash>
   </file>
 </asmv1:assembly>

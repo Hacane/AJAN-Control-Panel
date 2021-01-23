@@ -38,10 +38,6 @@ C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Ajan.pdb
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Flurl.dll
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Flurl.Http.dll
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Newtonsoft.Json.dll
-<<<<<<< HEAD
-=======
-C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\RestSharp.dll
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\System.ValueTuple.dll
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Flurl.pdb
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\Flurl.xml
@@ -52,10 +48,6 @@ C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\System.ValueTuple.
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\MainWindow.g.cs
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\App.g.cs
-<<<<<<< HEAD
-=======
-C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\GeneratedInternalTypeHelper.g.cs
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\Ajan_MarkupCompile.cache
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\Ajan_MarkupCompile.lref
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\MainWindow.baml
@@ -99,3 +91,33 @@ C:\Users\hacan\source\repos\panel\AJAN-installer\Ajan\obj\Debug\Ajan.application
 C:\Users\hacan\source\repos\panel\AJAN-installer\Ajan\obj\Debug\Ajan.csproj.CopyComplete
 C:\Users\hacan\source\repos\panel\AJAN-installer\Ajan\obj\Debug\Ajan.exe
 C:\Users\hacan\source\repos\panel\AJAN-installer\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Ajan.exe.config
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Ajan.exe.manifest
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Ajan.application
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Flurl.dll
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Flurl.Http.dll
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\System.ValueTuple.dll
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Flurl.pdb
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Flurl.xml
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Flurl.Http.pdb
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\RestSharp.xml
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\bin\Debug\System.ValueTuple.xml
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\MainWindow.g.cs
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\App.g.cs
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan_MarkupCompile.cache
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan_MarkupCompile.lref
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\MainWindow.baml
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.g.resources
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.Properties.Resources.resources
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.csproj.GenerateResource.cache
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.csproj.CoreCompileInputs.cache
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.exe.manifest
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.application
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.csproj.CopyComplete
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.pdb

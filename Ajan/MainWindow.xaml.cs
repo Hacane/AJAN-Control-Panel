@@ -44,7 +44,6 @@ namespace Ajan
         public MainWindow()
         {
             InitializeComponent();
-<<<<<<< HEAD
 
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))) {
                 Console.WriteLine("your OS Architecture is 64 bit ");
@@ -58,8 +57,6 @@ namespace Ajan
 
 
 
-=======
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
             checkJava( new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
             checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
             checkNode(new object(),  new RoutedEventArgs(), readConfig(NODEJS_PATH));
@@ -118,17 +115,12 @@ namespace Ajan
             cmd.StartInfo.FileName =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startTriplestore.bat")  ;
             cmd.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
             // cmd.StartInfo.RedirectStandardInput = true;
-<<<<<<< HEAD
             cmd.StartInfo.RedirectStandardOutput = false;
-=======
-            cmd.StartInfo.RedirectStandardOutput = true;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
             cmd.Start();
             StartTriplestore_btn.IsEnabled = false; 
-<<<<<<< HEAD
             Console.WriteLine("triple store started");
 
 
@@ -154,12 +146,6 @@ namespace Ajan
         }
 
 
-=======
-            Console.WriteLine("triple store started"); 
-        }
-
-     
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
         public void KillCmd()
         {
@@ -173,11 +159,8 @@ namespace Ajan
         private void startEditor(object sender, RoutedEventArgs e)
         {
 
-<<<<<<< HEAD
           
       
-=======
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
             var TestProcess = new System.Diagnostics.Process();
             TestProcess.StartInfo.FileName =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-editor-master\startEditor.bat");
@@ -201,7 +184,6 @@ namespace Ajan
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             cmd.StartInfo.FileName =   System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startAJAN.bat");
             cmd.StartInfo.WorkingDirectory =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
-<<<<<<< HEAD
             //cmd.StartInfo.RedirectStandardInput = true;
            // cmd.StartInfo.RedirectStandardOutput = true;
             cmd.StartInfo.CreateNoWindow = true;
@@ -221,19 +203,6 @@ namespace Ajan
 
 
 
-=======
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
-            cmd.Start();
-            StartExecutionservice_btn.IsEnabled = false;
-            Console.WriteLine("Execution service start started");
-
-        }
-
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         private void ExitEditor(object sender, RoutedEventArgs e)
         {
             //KillCmdAsync();
@@ -303,11 +272,7 @@ namespace Ajan
                 catch { strOutput = pr.StandardError.ReadLine(); }
  
                 Console.WriteLine("reading is " + strOutput);
-<<<<<<< HEAD
               
-=======
-                java_version_label_or.Visibility = Visibility.Hidden;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
                 path_java_btn.Visibility = Visibility.Hidden;
                 install_java_btn.Visibility = Visibility.Hidden;
 
@@ -339,11 +304,7 @@ namespace Ajan
                 java_install_sign.Source =  new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
-<<<<<<< HEAD
       
-=======
-                java_version_label_or.Visibility = Visibility.Visible;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
 
 
@@ -360,10 +321,6 @@ namespace Ajan
             {
                 path_maven_btn.Visibility = Visibility.Hidden;
                 install_Maven_btn.Visibility = Visibility.Hidden;
-<<<<<<< HEAD
-=======
-                maven_version_label_or.Visibility = Visibility.Hidden;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
@@ -378,7 +335,6 @@ namespace Ajan
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
                 string strOutput; 
                 try {   strOutput = pr.StandardOutput.ReadLine();
-<<<<<<< HEAD
                     Console.WriteLine("Maven output in StandardOutput", strOutput.Length);
                     Console.WriteLine( strOutput.Length);
                     Console.WriteLine( strOutput);
@@ -396,13 +352,6 @@ namespace Ajan
                 }
 
                 if (strOutput.Contains("not"))
-=======
-                    if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
-                }
-                catch {   strOutput = pr.StandardError.ReadLine() ;  }
-
-                if (strOutput == "not")
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
                 {
                     throw new Exception(" Mavenn couldn't be found on this machine!");
                 }
@@ -425,10 +374,6 @@ namespace Ajan
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
-<<<<<<< HEAD
-=======
-                maven_version_label_or.Visibility = Visibility.Visible;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
 
             }
@@ -444,10 +389,6 @@ namespace Ajan
             {
                 install_Nodejs_btn.Visibility = Visibility.Hidden;
                 path_nodejs_btn.Visibility = Visibility.Hidden;
-<<<<<<< HEAD
-=======
-                nodejs_version_label_or.Visibility = Visibility.Hidden;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
@@ -488,10 +429,6 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
-<<<<<<< HEAD
-=======
-                nodejs_version_label_or.Visibility = Visibility.Visible;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
             }
 
@@ -500,7 +437,6 @@ namespace Ajan
 
         private void installJava(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
 
 
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432")))
@@ -515,10 +451,6 @@ namespace Ajan
 
             }
 
-=======
-            System.Diagnostics.Process.Start("https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html");
-           
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         }
 
         private void checkBower(object sender, RoutedEventArgs e, String path)
@@ -530,10 +462,6 @@ namespace Ajan
               
                 install_Bower_btn.Visibility = Visibility.Hidden;
                 path_bower_btn.Visibility = Visibility.Hidden;
-<<<<<<< HEAD
-=======
-                bower_version_label_or.Visibility = Visibility.Hidden;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c bower -version";
@@ -571,10 +499,6 @@ namespace Ajan
                 bower_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Bower_btn.Visibility = Visibility.Visible;
                 path_bower_btn.Visibility = Visibility.Visible;
-<<<<<<< HEAD
-=======
-                bower_version_label_or.Visibility = Visibility.Visible;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
             }
         }
 
@@ -585,10 +509,6 @@ namespace Ajan
             {
                 install_Ember_btn.Visibility = Visibility.Hidden;
                 path_ember_btn.Visibility = Visibility.Hidden;
-<<<<<<< HEAD
-=======
-                ember_version_label_or.Visibility = Visibility.Hidden;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c ember --version";
@@ -634,26 +554,18 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Ember_btn.Visibility = Visibility.Visible;
                 path_ember_btn.Visibility = Visibility.Visible;
-<<<<<<< HEAD
-=======
-                ember_version_label_or.Visibility = Visibility.Visible;
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
             }
         }
 
         private void installMaven(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
             System.Diagnostics.Process.Start("https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip");
         }
 
         private void installNodejs(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
 
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432")))
             {
@@ -672,15 +584,11 @@ namespace Ajan
 
 
             
-=======
-            System.Diagnostics.Process.Start("https://nodejs.org/download/release/v8.6.0/");
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
         }
 
         private void installBower(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
             /*            var TestProcess = new System.Diagnostics.Process();
                         TestProcess.StartInfo.FileName = "install_bower.bat";
                         // TestProcess.StartInfo.WorkingDirectory = @"C:\Users\hacan\Documents\AJAN\ajan-editor\";
@@ -699,21 +607,11 @@ namespace Ajan
 
 
 
-=======
-            var TestProcess = new System.Diagnostics.Process();
-            TestProcess.StartInfo.FileName = "install_bower.bat";
-           // TestProcess.StartInfo.WorkingDirectory = @"C:\Users\hacan\Documents\AJAN\ajan-editor\";
-            TestProcess.Start();
-
-
-            
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
         }
 
         private void installEmber(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
             psi.FileName = "cmd.exe";
             psi.Arguments = "/c npm install -g ember-cli";
@@ -724,12 +622,6 @@ namespace Ajan
             psi.CreateNoWindow = true;
 
             System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-=======
-            var TestProcess = new System.Diagnostics.Process();
-            TestProcess.StartInfo.FileName = "install_ember.bat";
-            // TestProcess.StartInfo.WorkingDirectory = @"C:\Users\hacan\Documents\AJAN\ajan-editor\";
-            TestProcess.Start();
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         }
 
 
@@ -870,7 +762,6 @@ namespace Ajan
                 String editorpath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
                 Console.WriteLine(editorpath);
-<<<<<<< HEAD
                 return System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, editorpath + @"\Triplestore Repos\node_definitions.ttl")); 
                 
             } 
@@ -938,16 +829,6 @@ namespace Ajan
 
         
 
-=======
-                return System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, editorpath + @"\Triplestore Repos\node_definitions.ttl"));
-                
-            }
-
-            return "non"; 
-        }
-
-
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         private void createRepo()
         {
             String repoName = "node_definitions";
@@ -978,7 +859,6 @@ namespace Ajan
             Console.WriteLine(response2.Content);
         }
 
-<<<<<<< HEAD
         private void createRepowithData(String repoName, string data)
         {
            
@@ -1155,9 +1035,6 @@ namespace Ajan
 
 
         private String build_service()
-=======
-          private String build_service()
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         {
             var TestProcess = new System.Diagnostics.Process();
 
@@ -1242,11 +1119,7 @@ namespace Ajan
                    }*/
 
 
-<<<<<<< HEAD
         private void closeProgram(object sender, RoutedEventArgs e)
-=======
-        private void Button_Click(object sender, RoutedEventArgs e)
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         {
             ExitEditor(new object(),new RoutedEventArgs());
             Environment.Exit(0);
@@ -1257,7 +1130,6 @@ namespace Ajan
             
         }
 
-<<<<<<< HEAD
         private void minimizeProgram(object sender, RoutedEventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
@@ -1265,8 +1137,6 @@ namespace Ajan
 
         }
 
-=======
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         private void pathToJava(object sender, RoutedEventArgs e)
         {
             using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
@@ -1322,17 +1192,10 @@ namespace Ajan
                     try
                     {
                         var name = "PATH";
-<<<<<<< HEAD
                     var scope = EnvironmentVariableTarget.User; // or User
                         var oldValue = Environment.GetEnvironmentVariable(name, scope);
                         var newValue =     oldValue + @";" + path;
                      //   Environment.SetEnvironmentVariable(name, newValue, scope);   // adding nodejs path to enviromental variables  
-=======
-                        var scope = EnvironmentVariableTarget.User; // or User
-                        var oldValue = Environment.GetEnvironmentVariable(name, scope);
-                        var newValue =     oldValue + @";" + path;
-                        Environment.SetEnvironmentVariable(name, newValue, scope);
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
 
 

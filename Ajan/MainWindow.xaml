@@ -7,7 +7,6 @@
         xmlns:Properties="clr-namespace:Ajan.Properties" x:Name="main_windows" x:Class="Ajan.MainWindow"
         mc:Ignorable="d"
         Title="Ajan Control Panel" Height="834" Width="1308.5" WindowStyle="None">
-<<<<<<< HEAD
     <Grid Margin="0" RenderTransformOrigin="0.497,0.5" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#FF1B1B1B" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="232*"/>
@@ -17,15 +16,6 @@
             <ColumnDefinition Width="Auto" MinWidth="56"/>
             <ColumnDefinition Width="159*"/>
             <ColumnDefinition Width="0*"/>
-=======
-    <Grid Margin="0,-5,0,0" RenderTransformOrigin="0.496,0.499" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="162*"/>
-            <ColumnDefinition Width="72*"/>
-            <ColumnDefinition Width="565*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="102*"/>
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
         </Grid.ColumnDefinitions>
         <Grid.LayoutTransform>
             <TransformGroup>
@@ -35,7 +25,6 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.LayoutTransform>
-<<<<<<< HEAD
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="61" Margin="67,401,0,0" VerticalAlignment="Top" Width="1169" Background="#FF525252" CornerRadius="10"/>
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="61" Margin="67,323,0,0" VerticalAlignment="Top" Width="1169" Background="#FF525252" CornerRadius="10"/>
@@ -89,62 +78,6 @@
         </Button>
         <Label Content="AJAN CONTROL PANEL" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="352" Height="58" FontSize="25" FontFamily="Sylfaen" Foreground="White" Grid.ColumnSpan="3"/>
         <Image x:Name="bower_install_sign" HorizontalAlignment="Left" Height="59" Margin="103,337,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.429,0.586"/>
-=======
-        <Grid.Background>
-            <ImageBrush ImageSource="abstract-hud-ui-gui-future-futuristic-screen-system-virtual-background_115579-830.jpg"/>
-        </Grid.Background>
-        <Label x:Name="main_win" Content="AJAN CONTROL PANEL&#xD;&#xA;" HorizontalAlignment="Left" Margin="22,25,0,0" VerticalAlignment="Top" Height="42" Width="252" FontSize="24" FontWeight="Bold" RenderTransformOrigin="0.5,0.5" FontFamily="Sylfaen" Grid.Column="2">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.279"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-            <Label.DataContext>
-                <Properties:Settings/>
-            </Label.DataContext>
-        </Label>
-        <Button x:Name="StartAjan_btn" Content="  Start AJAN                 " Click="startAjan" HorizontalAlignment="Left" Margin="131,588,0,0" VerticalAlignment="Top" Width="122" Height="41" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"/>
-        <Button x:Name="StartTriplestore_btn" Content="     Start Triple Store                 " Click="startTripleStore" HorizontalAlignment="Left" Margin="61,656,0,0" VerticalAlignment="Top" Width="202" Height="35" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <Button x:Name="StartEditor_btn" Click="startEditor" HorizontalAlignment="Left" Margin="227,658,0,0" VerticalAlignment="Top" Width="114" Height="33" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" Content="Start Editor"/>
-        <Button x:Name="StartExecutionservice_btn" Content="Start Execution Service                 " Click="startExectionService" HorizontalAlignment="Left" Margin="402,654,0,0" VerticalAlignment="Top" Width="201" Height="37" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" RenderTransformOrigin="-1.748,0.584" Grid.Column="2"/>
-        <Label Content="AJAN CONTROL PANEL" HorizontalAlignment="Left" Margin="111,159,0,0" VerticalAlignment="Top" Width="352" Height="58" FontSize="30" FontFamily="Sylfaen" Grid.Column="2" Foreground="#FFBBA900"/>
-        <Button x:Name="ExitAjan_btn" Content="   Exit AJAN          " Click="ExitEditor" HorizontalAlignment="Left" Margin="319,588,0,0" VerticalAlignment="Top" Width="122" Height="41" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"/>
-        <Label x:Name="java_version_label" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="34,246,0,0" VerticalAlignment="Top" Width="533" Height="40" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen" Grid.ColumnSpan="2"/>
-        <Label x:Name="maven_version_label" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="34,298,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFBBA900" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="2"/>
-        <Label x:Name="node_version_label" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="34,350.332,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFBBA900" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="2"/>
-        <Button x:Name="install_java_btn" Content="Install OpenJDK 1.8" Click="installJava" HorizontalAlignment="Left" Margin="566,247,0,0" VerticalAlignment="Top" Width="171" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" />
-        <Label x:Name="bower_version_label" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="34,404.333,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFBBA900" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="2"/>
-        <Button x:Name="install_Maven_btn" Content="Install Maven 3.9.9" Click="installMaven" HorizontalAlignment="Left" Margin="566,298,0,0" VerticalAlignment="Top" Width="171" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Button x:Name="install_Nodejs_btn" Content="Install NodeJS 8.6" Click="installNodejs" HorizontalAlignment="Left" Margin="566,353,0,0" VerticalAlignment="Top" Width="171" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Button x:Name="install_Bower_btn" Content="Install Bower" Click="installBower" HorizontalAlignment="Left" Margin="566,404,0,0" VerticalAlignment="Top" Width="171" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Label x:Name="ember_version_label" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="34,457,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFBBA900" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="2"/>
-        <Button x:Name="install_Ember_btn" Content="Install Ember" Click="installEmber" HorizontalAlignment="Left" Margin="566,456,0,0" VerticalAlignment="Top" Width="171" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Button x:Name="config_btn" Content=" Pre-Launch Configurations       " Click="configWindow" HorizontalAlignment="Left" Margin="163,526,0,0" VerticalAlignment="Top" Width="241" Height="41" FontWeight="Bold" FontSize="18" Background="#FFBBA904" Foreground="#FF00081D" Grid.Column="2"/>
-        <Button Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="720,154,0,0" VerticalAlignment="Top" Width="40" Height="40" RenderTransformOrigin="-0.08,0.643" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="08-512.png"/>
-            </Button.Background>
-        </Button>
-        <Image x:Name="java_install_sign" HorizontalAlignment="Left" Height="24" Margin="231,254,0,0" VerticalAlignment="Top" Width="31" Source="greenTick.png" RenderTransformOrigin="0.581,0.486" Grid.ColumnSpan="2"/>
-        <Image x:Name="maven_install_sign" HorizontalAlignment="Left" Height="24" Margin="230,303,0,0" VerticalAlignment="Top" Width="31" Source="greenTick.png" RenderTransformOrigin="0.495,0.778" Grid.ColumnSpan="2"/>
-        <Image x:Name="node_install_sign" HorizontalAlignment="Left" Height="24" Margin="231,355,0,0" VerticalAlignment="Top" Width="31" Source="greenTick.png" Grid.ColumnSpan="2"/>
-        <Image x:Name="bower_install_sign" HorizontalAlignment="Left" Height="24" Margin="230,408,0,0" VerticalAlignment="Top" Width="31" Source="greenTick.png" RenderTransformOrigin="-0.086,1.194" Grid.ColumnSpan="2"/>
-        <Image x:Name="ember_install_sign" HorizontalAlignment="Left" Height="24" Margin="230,460,0,0" VerticalAlignment="Top" Width="31" Source="greenTick.png" Grid.ColumnSpan="2"/>
-        <Button x:Name="path_java_btn" Content="path to OpenJDK 1.8" Click="pathToJava" HorizontalAlignment="Left" Margin="350,247,0,0" VerticalAlignment="Top" Width="185" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"  />
-        <Label x:Name="java_version_label_or" Content="or" Grid.Column="2" HorizontalAlignment="Left" Margin="538,244,0,0" VerticalAlignment="Top" Width="26" Height="29" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
-        <Button x:Name="path_maven_btn" Content="path to Maven 3.9.9" Click="pathToMaven" HorizontalAlignment="Left" Margin="350,298,0,0" VerticalAlignment="Top" Width="185" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"  />
-        <Label x:Name="maven_version_label_or" Content="or" Grid.Column="2" HorizontalAlignment="Left" Margin="538,296,0,0" VerticalAlignment="Top" Width="26" Height="29" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
-        <Button x:Name="path_nodejs_btn" Content="path to NodeJS 8.6" Click="pathToNodejs" HorizontalAlignment="Left" Margin="350,353,0,0" VerticalAlignment="Top" Width="185" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"  />
-        <Label x:Name="nodejs_version_label_or" Content="or" Grid.Column="2" HorizontalAlignment="Left" Margin="538,353,0,0" VerticalAlignment="Top" Width="26" Height="29" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
-        <Button x:Name="path_bower_btn" Content="path to Bower" Click="pathToBower" HorizontalAlignment="Left" Margin="350,404,0,0" VerticalAlignment="Top" Width="185" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"  />
-        <Button x:Name="path_ember_btn" Content="path to Ember" Click="pathToEmber" HorizontalAlignment="Left" Margin="350,456,0,0" VerticalAlignment="Top" Width="185" Height="29" FontWeight="Bold" FontSize="18" Background="#FF0271BE" Foreground="#FF00081D" Grid.Column="2"  />
-        <Label x:Name="bower_version_label_or" Content="or" Grid.Column="2" HorizontalAlignment="Left" Margin="538,404,0,0" VerticalAlignment="Top" Width="26" Height="29" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
-        <Label x:Name="ember_version_label_or" Content="or" Grid.Column="2" HorizontalAlignment="Left" Margin="540,454,0,0" VerticalAlignment="Top" Width="26" Height="29" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
-        <Label x:Name="process_info_label" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="424,526,0,0" VerticalAlignment="Top" Width="238" Height="40" Foreground="#FFBBA900" FontSize="18" FontFamily="Sylfaen"/>
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
 
     </Grid>
 </Window>

@@ -7,22 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-<<<<<<< HEAD
     <dependentAssembly dependencyType="install" codebase="Ajan.exe.manifest" size="6708">
-=======
-    <dependentAssembly dependencyType="install" codebase="Ajan.exe.manifest" size="6709">
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
       <assemblyIdentity name="Ajan.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>Psp3f21Vf1xK2qeFWEx96P+Y9UbT96fCLd21MNc6UKU=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>ybhOXEOkmUNv+8IzDrJIbMJdnhp6aXXsbo61AjXmMaE=</dsig:DigestValue>
->>>>>>> 145f64b44d6b5ca6b2c229a1193fbc4a13aa1776
+        <dsig:DigestValue>axG72NrEFBsGF4f03fFI3MAozLp/hfusklcGtIKemGE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
