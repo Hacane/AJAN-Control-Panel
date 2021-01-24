@@ -78,6 +78,13 @@
         </Button>
         <Label Content="AJAN CONTROL PANEL" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="352" Height="58" FontSize="25" FontFamily="Sylfaen" Foreground="White" Grid.ColumnSpan="3"/>
         <Image x:Name="bower_install_sign" HorizontalAlignment="Left" Height="59" Margin="103,337,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.429,0.586"/>
+        <Label x:Name="oneLinerLogLabel" Content="real time application status..." HorizontalAlignment="Left" Margin="173,781,0,0" VerticalAlignment="Top" Width="1000" Grid.ColumnSpan="6" Foreground="#FFFDFDFD" FontSize="15" MaxHeight="35" MaxWidth="1000"/>
+        <Grid Grid.ColumnSpan="4" Margin="177,758,32,38">
+            <ProgressBar x:Name="setupProgressBar" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="876" BorderBrush="#FF06B025" Margin="0,1,0,0"/>
+            <Label x:Name="ProgressBarPercent" Content="0%" HorizontalAlignment="Left" Margin="423,-1,0,0" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.562,0.517" Height="30" VerticalAlignment="Top"/>
+
+        </Grid>
+        <Label x:Name="currentTaskLabel" Content="current task" HorizontalAlignment="Left" Margin="45,726,0,0" VerticalAlignment="Top" Width="277" Foreground="#FFFDFDFD" FontSize="15" MaxHeight="35" MaxWidth="1000" Grid.Column="3" HorizontalContentAlignment="Center" FontWeight="Bold" FontFamily="Comic Sans MS"/>
 
     </Grid>
 </Window>

@@ -15,7 +15,11 @@ using System.Windows.Shapes;
 using System.IO;
 using Newtonsoft;
 using System.Net.Http;
-using RestSharp; 
+using RestSharp;
+
+using System.Diagnostics;
+using System.Threading;
+using System.ComponentModel;
 
 namespace Ajan
 {
@@ -114,27 +118,58 @@ namespace Ajan
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             cmd.StartInfo.FileName =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startTriplestore.bat")  ;
             cmd.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
-            // cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = false;
+             cmd.StartInfo.RedirectStandardError = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
+            cmd.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
             cmd.Start();
+            cmd.BeginOutputReadLine();
+            cmd.BeginErrorReadLine();
             StartTriplestore_btn.IsEnabled = false; 
             Console.WriteLine("triple store started");
+            currentTaskLabel.Content = "Loading Triple Store";
+            setupProgressBar.Value = 0;
+            void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+            {
+                //* Do your stuff with the output (write to console/log/StringBuilder)
+                Console.WriteLine(outLine.Data);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    setupProgressBar.Value += 1; // Math.Round(100.0 / 66);
+                    ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+
+                    if (!String.IsNullOrEmpty(outLine.Data)) {
+                        oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                        if (outLine.Data.Contains("Starting ProtocolHandler")) { Console.WriteLine("Triple Store successfully started !"); oneLinerLogLabel.Content = "TripleStore server is Running...";
+
+                            readRepo("anything");
+                            readRepo("new");
+                            readRepo("agents");
+                            readRepo("behaviors");
+                            readRepo("domain");
+                            readRepo("services");
+                            readRepo("node_definitions");
+                            readRepo("editor_data");
+                            readRepo("SYSTEM");
+                        
+                        }
+
+                    }
+
+                
+
+             //       else if (outLine.Data.Contains("Application failed")) { Console.WriteLine("Execution Service FAILED !"); oneLinerLogLabel.Content = "Execution Service Failed !"; }
+
+                });
 
 
-            
+            }
+
        
-                 readRepo("anything") ; 
-                 readRepo("new") ; 
-                 readRepo("agents") ; 
-                 readRepo("behaviors") ; 
-                 readRepo("domain") ;
-                 readRepo("services") ;
-                 readRepo("node_definitions") ;
-                 readRepo("editor_data") ;
-                 readRepo("SYSTEM");
 
 
 
@@ -160,7 +195,8 @@ namespace Ajan
         {
 
           
-      
+
+
 
             var TestProcess = new System.Diagnostics.Process();
             TestProcess.StartInfo.FileName =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-editor-master\startEditor.bat");
@@ -185,17 +221,66 @@ namespace Ajan
             cmd.StartInfo.FileName =   System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startAJAN.bat");
             cmd.StartInfo.WorkingDirectory =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
             //cmd.StartInfo.RedirectStandardInput = true;
-           // cmd.StartInfo.RedirectStandardOutput = true;
+            // cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.RedirectStandardError = true;
+
+            cmd.StartInfo.RedirectStandardOutput = true;
+           // cmd.OutputDataReceived += (s, ev) => Console.WriteLine(ev.Data);  
+            cmd.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
             cmd.StartInfo.CreateNoWindow = true;
            cmd.StartInfo.UseShellExecute = false;
             cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
             cmd.Start();
-            
-            StartExecutionservice_btn.IsEnabled = false;
-            Console.WriteLine("Execution service start started");
+            cmd.BeginOutputReadLine();
+            setupProgressBar.Value = 0;
+          Console.WriteLine("Execution service start started");
+            currentTaskLabel.Content = "Loading Execution Service"; 
 
-            Task.Delay(30000).ContinueWith(t => replaceRepos());
+
+            /*string standard_output;
+            while ((standard_output = cmd.StandardOutput.ReadLine()) != null)
+            {
+            Console.WriteLine(standard_output);
+                if (  String.IsNullOrEmpty(standard_output)) { 
+            Console.WriteLine("reading ended");
+                   // break;
+                }
+
+            }*/
+
+
+             void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+            {
+                //* Do your stuff with the output (write to console/log/StringBuilder)
+                Console.WriteLine(outLine.Data);
+               
+                this.Dispatcher.Invoke(() =>
+                {
+
+                setupProgressBar.Value += Math.Round(100.0 / 66);
+                ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                    if (!String.IsNullOrEmpty(outLine.Data))
+                    {
+                        if (outLine.Data.IndexOf(" :") != -1)
+                        {
+                            oneLinerLogLabel.Content = outLine.Data.Substring(outLine.Data.IndexOf(" :") + 2).Substring(0, Math.Min(Math.Max(outLine.Data.Length - outLine.Data.IndexOf(" :") - 2, 0), 50)) + "...  ";
+
+                        }
+
+
+                        if (outLine.Data.Contains("Started Application")) { Console.WriteLine("Execution Service successfully started !"); oneLinerLogLabel.Content = "Execution Service is Running..."; }
+                        else if (outLine.Data.Contains("Application failed")) { Console.WriteLine("Execution Service FAILED !"); oneLinerLogLabel.Content = "Execution Service Failed !"; }
+                    }
+                });
+
+              
+            }
+
+            StartExecutionservice_btn.IsEnabled = false;
           
+
+              Task.Delay(30000).ContinueWith(t => replaceRepos());
+
         }
 
 
@@ -772,11 +857,12 @@ namespace Ajan
 
         private void replaceRepos()
         {
-            replaceRepo("agents");  
+       /*     replaceRepo("agents");  
             replaceRepo("behaviors");
             replaceRepo("domain");
-            replaceRepo("services");
+             replaceRepo("services");*/
             createRepo();
+            updateRepo("agents"); updateRepo("services"); updateRepo("domain"); updateRepo("behaviors");
         }
 
         private void replaceRepo(String reponame) {
@@ -966,10 +1052,10 @@ namespace Ajan
 
             var client = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}/config");
             client.Timeout = -1;
-            var request = new RestRequest(Method.PUT);
+            var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "text/turtle");
-            request.AddHeader("Accept", "text/turtle");
-            request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
+          //  request.AddHeader("Accept", "text/turtle");
+            request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"modified on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
 
             try
             {
