@@ -144,7 +144,7 @@ namespace Ajan
 
                     if (!String.IsNullOrEmpty(outLine.Data)) {
                         oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
-                        if (outLine.Data.Contains("Starting ProtocolHandler")) { Console.WriteLine("Triple Store successfully started !"); oneLinerLogLabel.Content = "TripleStore server is Running...";
+                        if (outLine.Data.Contains("Starting ProtocolHandler")) { Console.WriteLine("Triple Store successfully started !"); oneLinerLogLabel.Content = "Triple Store server is Running...";
 
                             readRepo("anything");
                             readRepo("new");
@@ -268,7 +268,7 @@ namespace Ajan
                         }
 
 
-                        if (outLine.Data.Contains("Started Application")) { Console.WriteLine("Execution Service successfully started !"); oneLinerLogLabel.Content = "Execution Service is Running..."; }
+                        if (outLine.Data.Contains("Started Application")) { Console.WriteLine("Execution Service successfully started !"); oneLinerLogLabel.Content = "Execution Service is Running..."; replaceRepos(); }
                         else if (outLine.Data.Contains("Application failed")) { Console.WriteLine("Execution Service FAILED !"); oneLinerLogLabel.Content = "Execution Service Failed !"; }
                     }
                 });
@@ -279,7 +279,7 @@ namespace Ajan
             StartExecutionservice_btn.IsEnabled = false;
           
 
-              Task.Delay(30000).ContinueWith(t => replaceRepos());
+          //    Task.Delay(30000).ContinueWith(t => replaceRepos());
 
         }
 
@@ -748,14 +748,12 @@ namespace Ajan
             {
 
 
-                if (build_service() != "SUCCESS")
-                {
-                    throw new Exception($"Service build Failed !");
-                }
+                build_service();
+        
                 Console.WriteLine("***********service building end**************************");
 
 
-                if (build_editor() != "SUCCESS")
+ /*               if (build_editor() != "SUCCESS")
                 {
                     throw new Exception($"Editor build Failed !");
                 }
@@ -772,7 +770,7 @@ namespace Ajan
 
                 createRepo();
                 Console.WriteLine("repo created");
-                process_info_label.Content = "AJAN Configurations done!";
+                process_info_label.Content = "AJAN Configurations done!";*/
             }
             catch (Exception exception)
             {
@@ -1045,17 +1043,13 @@ namespace Ajan
         private void updateRepo(String repoName)
         {
 
-
             DateTime now = DateTime.Now;
-
-
-
             var client = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}/config");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "text/turtle");
           //  request.AddHeader("Accept", "text/turtle");
-            request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"modified on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
+            request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"Created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
 
             try
             {
@@ -1120,8 +1114,10 @@ namespace Ajan
 
 
 
-        private String build_service()
+        private void build_service()
         {
+        
+
             var TestProcess = new System.Diagnostics.Process();
 
             string target = @"..\Release";
@@ -1138,28 +1134,62 @@ namespace Ajan
                 TestProcess.StartInfo.FileName = getPath(paths.ServiceInstall);
                 TestProcess.StartInfo.WorkingDirectory = getPath(paths.ServiceInstallDir);
                 TestProcess.StartInfo.RedirectStandardInput = true;
-                TestProcess.EnableRaisingEvents=false;
+        
                 TestProcess.StartInfo.RedirectStandardOutput = true;
+       
+                TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
                 TestProcess.StartInfo.CreateNoWindow = true;
                 TestProcess.StartInfo.UseShellExecute = false;
                 TestProcess.StartInfo.EnvironmentVariables["PATH"] =   readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
-                while (!TestProcess.StandardOutput.EndOfStream)
+                TestProcess.BeginOutputReadLine();
+
+                currentTaskLabel.Content = "AJAN SERVICE Installation";
+                setupProgressBar.Value = 0;
+                void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
-                 Console.WriteLine(TestProcess.StandardOutput.ReadLine());
+                    Console.WriteLine(outLine.Data);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        setupProgressBar.Value +=  100.0/712 ; // Math.Round(100.0 / 66);
+                        ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+
+                        if (!String.IsNullOrEmpty(outLine.Data))
+                        {
+                            oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                            if (outLine.Data.Contains("BUILD SUCCESS")  )
+                            {
+                             
+                                Console.WriteLine("Service installed successfully !"); oneLinerLogLabel.Content = "AJAN SERVICE installed successfully !"; 
+                                setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+                                build_editor();
+
+
+                            }
+                        }                
+                    });
                 }
-            }
+             }
             catch (Exception e){
                 Console.WriteLine("Exception thrown : ");
                 Console.WriteLine(e.Message);
-                return "FAIL";
+            
             }
-
-            return "SUCCESS";
+   
         }
 
-          private String build_editor()
+
+
+
+
+
+
+
+
+          private void build_editor()
         {
+
+            bool installationEnded = false;
             try
             {
                 var TestProcess = new System.Diagnostics.Process();
@@ -1168,25 +1198,50 @@ namespace Ajan
                 TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorInstallDir);
 
 
-                TestProcess.StartInfo.RedirectStandardInput = true;
+          
                 TestProcess.StartInfo.RedirectStandardOutput = true;
+                TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
                 TestProcess.StartInfo.CreateNoWindow = true;
                 TestProcess.StartInfo.UseShellExecute = false;
               TestProcess.StartInfo.EnvironmentVariables["PATH"] = @"C:\Program Files\Git\cmd" + ";"  + readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
              //   TestProcess.StartInfo.EnvironmentVariables["PATH"] =   readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
-                while (!TestProcess.StandardOutput.EndOfStream)
+                TestProcess.BeginOutputReadLine();
+
+                currentTaskLabel.Content = "AJAN EDITOR Installation";
+                setupProgressBar.Value = 0;
+                void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
-                    Console.WriteLine(TestProcess.StandardOutput.ReadLine());
+                    Console.WriteLine(outLine.Data);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        setupProgressBar.Value += 100/20 ; // Math.Round(100.0 / 66);
+                        ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+
+                        if (!String.IsNullOrEmpty(outLine.Data) )
+                        {
+                            oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                            if (outLine.Data.Contains("packages in") || installationEnded)
+                            {
+                                installationEnded = true; 
+                                Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
+                                setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+
+
+
+                            }
+                        }
+                    });
                 }
+                 
             }
             catch (Exception e) {
                 Console.WriteLine("Exception thrown : ");
                 Console.WriteLine(e.Message);
-                return "FAIL"; 
+            
             }
 
-            return "SUCCESS";
+      
 
         }
 
