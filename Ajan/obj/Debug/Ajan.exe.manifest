@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="86424">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="85400">
       <assemblyIdentity name="Ajan" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hQUwxq+r3jHZ+7zwCuYrpOUc2YdptRW4t2Xz+s1+6G8=</dsig:DigestValue>
+        <dsig:DigestValue>6L6zqmHkmu11EH3xVnf5ofXiSH2lOvk9lNQ2zoixB5E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

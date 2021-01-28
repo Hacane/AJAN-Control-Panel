@@ -750,7 +750,7 @@ namespace Ajan
 
                 build_service();
         
-                Console.WriteLine("***********service building end**************************");
+            
 
 
  /*               if (build_editor() != "SUCCESS")
@@ -777,12 +777,6 @@ namespace Ajan
                 Console.WriteLine("Error !!!");
                 Console.WriteLine(exception.Message);
             }
-
-
-
-
-
-
 
         }
 
@@ -1143,11 +1137,13 @@ namespace Ajan
                 TestProcess.StartInfo.EnvironmentVariables["PATH"] =   readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
                 TestProcess.BeginOutputReadLine();
+                Console.WriteLine("AJAN Service Installation started");
 
                 currentTaskLabel.Content = "AJAN SERVICE Installation";
                 setupProgressBar.Value = 0;
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
+             
                     Console.WriteLine(outLine.Data);
                     this.Dispatcher.Invoke(() =>
                     {
@@ -1207,6 +1203,7 @@ namespace Ajan
              //   TestProcess.StartInfo.EnvironmentVariables["PATH"] =   readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
                 TestProcess.BeginOutputReadLine();
+                Console.WriteLine("AJAN EDITOR Installation started");
 
                 currentTaskLabel.Content = "AJAN EDITOR Installation";
                 setupProgressBar.Value = 0;
