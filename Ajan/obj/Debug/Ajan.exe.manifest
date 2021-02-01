@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="85400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ajan.exe" size="104344">
       <assemblyIdentity name="Ajan" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6L6zqmHkmu11EH3xVnf5ofXiSH2lOvk9lNQ2zoixB5E=</dsig:DigestValue>
+        <dsig:DigestValue>ROiO73pcz5h3kyVqH0gbBcYg37xVYe2DzloKcL46mqU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -110,6 +110,30 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
         <dsig:DigestValue>6QXRAlhbIsbfBPIZr1y9v6e8Fll56XiLYt9tzBZeEPQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WPF.Bootstrap.dll" size="67584">
+      <assemblyIdentity name="WPF.Bootstrap" version="0.0.5.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>gwzby9JpmXNFn07MjmcUlwy30HaJJMZBgX3J+yGhJ1g=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WpfAnimatedGif.dll" size="42496">
+      <assemblyIdentity name="WpfAnimatedGif" version="2.0.0.0" publicKeyToken="9E7CD3B544A090DC" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>RJjY0aBUlxeFJQeZO3wDUNHaQI0ilD7YJE0WRBq/r5k=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

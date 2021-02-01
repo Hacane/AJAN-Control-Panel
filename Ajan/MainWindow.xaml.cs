@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Management;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ using RestSharp;
 using System.Diagnostics;
 using System.Threading;
 using System.ComponentModel;
+using System.Net;
 
 namespace Ajan
 {
@@ -31,6 +33,7 @@ namespace Ajan
         public const String NODEJS_PATH = "nodejsPath";
         public const String BOWER_PATH = "bowerPath";
         public const String EMBER_PATH = "emberPath";
+        public const String SETUP_DONE = "setupDone";
 
         enum paths
         {
@@ -45,9 +48,32 @@ namespace Ajan
         Nodedefinitionsttl
         }
 
+        int tripleStoreprocessID;
+
+        class Pr 
+        {
+            public int ID = 0 ;
+            public bool  Running = false;
+            public bool  Loaded  = false;
+        }
+
+        Pr TripleStore = new Pr();
+        Pr ExecutionService = new Pr();
+        Pr Editor = new Pr();
+
+
         public MainWindow()
         {
+          
+
+
             InitializeComponent();
+            TripleStore_loadingGif.Visibility = Visibility.Hidden;
+            Editor_loadingGif.Visibility = Visibility.Hidden;
+            ExecutionService_loadingGif.Visibility = Visibility.Hidden;
+            MouseDown += Window_MouseDown;
+              void Window_MouseDown(object sender, MouseButtonEventArgs e){if (e.ChangedButton == MouseButton.Left)DragMove(); }
+         
 
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))) {
                 Console.WriteLine("your OS Architecture is 64 bit ");
@@ -55,17 +81,14 @@ namespace Ajan
             else
             {
                 Console.WriteLine("your OS Architecture is 32 bit ");
-
             }
-
-
-
 
             checkJava( new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
             checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
             checkNode(new object(),  new RoutedEventArgs(), readConfig(NODEJS_PATH));
             checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
             checkEmber(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
+            if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       ";  }
            
             
         }
@@ -102,19 +125,37 @@ namespace Ajan
         private void startAjan(object sender, RoutedEventArgs e)
         {
             ExitEditor(new object(), new RoutedEventArgs());
-            System.Threading.Thread.Sleep(2000);
+         
             startEditor(new object(), new RoutedEventArgs());
             startTripleStore(new object(), new RoutedEventArgs());
-            System.Threading.Thread.Sleep(5000);
-            startExectionService(new object(), new RoutedEventArgs()); 
-       
-            StartAjan_btn.IsEnabled = false;
-
+            startExectionService(new object(), new RoutedEventArgs());
+ 
+          
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void startTripleStore(object sender, RoutedEventArgs e)
-        {
+        { 
+        if(!TripleStore.Running){
+                double percent = 0;
+                TripleStore.Running = true;
+            TripleStore_loadingGif.Visibility = Visibility.Visible;
+
+
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             cmd.StartInfo.FileName =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startTriplestore.bat")  ;
             cmd.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
@@ -128,8 +169,13 @@ namespace Ajan
             cmd.Start();
             cmd.BeginOutputReadLine();
             cmd.BeginErrorReadLine();
-            StartTriplestore_btn.IsEnabled = false; 
+            //  StartTriplestore_btn.IsEnabled = false; 
+          
+
             Console.WriteLine("triple store started");
+            Console.WriteLine("with Id =");
+            Console.WriteLine(cmd.Id);
+            tripleStoreprocessID = cmd.Id;
             currentTaskLabel.Content = "Loading Triple Store";
             setupProgressBar.Value = 0;
             void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
@@ -139,14 +185,32 @@ namespace Ajan
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    setupProgressBar.Value += 1; // Math.Round(100.0 / 66);
+                    percent += 0.8;
+                    setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
                     ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
 
                     if (!String.IsNullOrEmpty(outLine.Data)) {
-                        oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
-                        if (outLine.Data.Contains("Starting ProtocolHandler")) { Console.WriteLine("Triple Store successfully started !"); oneLinerLogLabel.Content = "Triple Store server is Running...";
+                        if (!TripleStore.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  "; } 
+                  
+                        if (outLine.Data.Contains("Starting ProtocolHandler")) {
+                            TripleStore.Loaded = true;
+                            percent = 100;
+                            setupProgressBar.Value = 100; 
+                            ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                            Console.WriteLine("Triple Store successfully started !");
+                            Uri link = new Uri("http://localhost:8090");
 
-                            readRepo("anything");
+
+                            oneLinerLogLabel.Content = "Triple Store started Successfully !";
+                            TripleStore_loadingGif.Visibility = Visibility.Hidden;
+                            var hp = new Hyperlink(new Run("http://localhost:8090"));
+                            hp.Click += (s, ee) => { System.Diagnostics.Process.Start("http://localhost:8090/workbench/repositories"); };
+
+                            tripleStore_txtbox.Text="Running on server: ";
+                            tripleStore_txtbox.Inlines.Add(hp);
+                         
+
+                  /*          readRepo("anything");
                             readRepo("new");
                             readRepo("agents");
                             readRepo("behaviors");
@@ -154,7 +218,7 @@ namespace Ajan
                             readRepo("services");
                             readRepo("node_definitions");
                             readRepo("editor_data");
-                            readRepo("SYSTEM");
+                            readRepo("SYSTEM");*/
                         
                         }
 
@@ -169,18 +233,10 @@ namespace Ajan
 
             }
 
-       
-
-
-
-
-
-
-
+            }
+            else{ Console.WriteLine("process already running"); }
 
         }
-
-
 
         public void KillCmd()
         {
@@ -191,10 +247,24 @@ namespace Ajan
         {
             await Task.Run(() => KillCmd());
         }
+
+
+
+
+
+
+
+
+
+
         private void startEditor(object sender, RoutedEventArgs e)
         {
+            if (!Editor.Running)
+            {
+                Editor.Running = true;
+                Editor_loadingGif.Visibility = Visibility.Visible;
+                double percent = 0; 
 
-          
 
 
 
@@ -203,20 +273,107 @@ namespace Ajan
             TestProcess.StartInfo.WorkingDirectory =   System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-editor-master");
             TestProcess.StartInfo.RedirectStandardInput = true;
             TestProcess.StartInfo.RedirectStandardOutput = true;
+            TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
+            TestProcess.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
             TestProcess.StartInfo.CreateNoWindow = true;
             TestProcess.StartInfo.UseShellExecute = false;
             TestProcess.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";"+ readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
             TestProcess.Start();
-            StartEditor_btn.IsEnabled = false;
-            Console.WriteLine("Editor started");
-            System.Diagnostics.Process.Start("http://localhost:4200/");
+            TestProcess.BeginOutputReadLine();
+           
+                //     TestProcess.BeginErrorReadLine();
+
+                Console.WriteLine("Editor started");
+            //  System.Diagnostics.Process.Start("http://localhost:4200/");
+     
 
 
+            void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+            {
+                //* Do your stuff with the output (write to console/log/StringBuilder)
+                Console.WriteLine(outLine.Data);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    percent += 100.0 / 750 ;
+
+                 //   if (( TripleStore.Loaded && ExecutionService.Loaded) || (!TripleStore.Running && !ExecutionService.Running) || (!TripleStore.Running && ExecutionService.Loaded) || (TripleStore.Loaded && !ExecutionService.Running) )  // either exection service and triplestore not running or they are running but finished loading 
+                    if ( ( TripleStore.Loaded || !TripleStore.Running  ) && (ExecutionService.Loaded || !ExecutionService.Running)   )  // either exection service and triplestore not running or they are running but finished loading 
+                    {
+                        currentTaskLabel.Content = "Loading AJAN Editor";
+                        setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
+                        ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                    }
+
+
+                   
+
+                    if (!String.IsNullOrEmpty(outLine.Data))
+                    {
+                        if (!Editor.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  "; }
+                      
+
+                        if (outLine.Data.Contains("Build successful"))
+                        {
+                            Editor.Loaded = true;
+                            percent = 100;
+                            setupProgressBar.Value = 100;
+                            ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                            Console.WriteLine("AJAN Editor started successfully !");
+                            Uri link = new Uri("http://localhost:4200/");
+
+
+                            oneLinerLogLabel.Content = "AJAN Editor Started Successfully !";
+                            Editor_loadingGif.Visibility = Visibility.Hidden;
+
+
+
+                            var hp = new Hyperlink(new Run("http://localhost:4200"));
+                            hp.Click += (s, ee) => { System.Diagnostics.Process.Start("http://localhost:4200"); };
+
+                            editor_txtbox.Text = "Running on server: ";
+                            editor_txtbox.Inlines.Add(hp);
+
+
+                 
+
+                        }
+
+                    }
+
+
+
+                    //       else if (outLine.Data.Contains("Application failed")) { Console.WriteLine("Execution Service FAILED !"); oneLinerLogLabel.Content = "Execution Service Failed !"; }
+
+                });
+
+
+            }
+            }
+            else { Console.WriteLine("process already running"); }
 
         }
 
+
+
+
+
+
+
+
+
+
+
         private void startExectionService(object sender, RoutedEventArgs e)
         {
+            if (!ExecutionService.Running)
+            {
+                double percent = 0; 
+                ExecutionService.Running = true;
+                ExecutionService_loadingGif.Visibility = Visibility.Visible;
+
+
+
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             cmd.StartInfo.FileName =   System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startAJAN.bat");
             cmd.StartInfo.WorkingDirectory =  System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
@@ -234,7 +391,8 @@ namespace Ajan
             cmd.BeginOutputReadLine();
             setupProgressBar.Value = 0;
           Console.WriteLine("Execution service start started");
-            currentTaskLabel.Content = "Loading Execution Service"; 
+           
+          
 
 
             /*string standard_output;
@@ -249,7 +407,7 @@ namespace Ajan
             }*/
 
 
-             void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+            void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
             {
                 //* Do your stuff with the output (write to console/log/StringBuilder)
                 Console.WriteLine(outLine.Data);
@@ -257,18 +415,41 @@ namespace Ajan
                 this.Dispatcher.Invoke(() =>
                 {
 
-                setupProgressBar.Value += Math.Round(100.0 / 66);
-                ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                    percent += 100.0 / 66 ;
+                    if ((TripleStore.Running && TripleStore.Loaded) || !TripleStore.Running )
+                    {
+                        currentTaskLabel.Content = "Loading Execution Service";
+                        setupProgressBar.Value = Math.Round(percent);
+                        ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                    }
+                 
                     if (!String.IsNullOrEmpty(outLine.Data))
                     {
-                        if (outLine.Data.IndexOf(" :") != -1)
+                        if (outLine.Data.IndexOf(" :") != -1 && !ExecutionService.Loaded)
                         {
                             oneLinerLogLabel.Content = outLine.Data.Substring(outLine.Data.IndexOf(" :") + 2).Substring(0, Math.Min(Math.Max(outLine.Data.Length - outLine.Data.IndexOf(" :") - 2, 0), 50)) + "...  ";
 
                         }
 
 
-                        if (outLine.Data.Contains("Started Application")) { Console.WriteLine("Execution Service successfully started !"); oneLinerLogLabel.Content = "Execution Service is Running..."; replaceRepos(); }
+                        if (outLine.Data.Contains("Started Application")) {
+                            ExecutionService.Loaded = true;
+                            percent = 100;
+                            setupProgressBar.Value = 100;
+                            ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                            Console.WriteLine("Execution Service successfully started !");      
+                            oneLinerLogLabel.Content = "Execution Service started Successfully !"; 
+                            replaceRepos();        
+                            ExecutionService_loadingGif.Visibility = Visibility.Hidden;
+
+                            var hp = new Hyperlink(new Run("http://localhost:8080"));
+                            hp.Click += (s, ee) => { System.Diagnostics.Process.Start("http://localhost:8080"); };
+
+                            execusionService_txtbox.Text = "Running on server: ";
+                            execusionService_txtbox.Inlines.Add(hp);
+
+
+                        }
                         else if (outLine.Data.Contains("Application failed")) { Console.WriteLine("Execution Service FAILED !"); oneLinerLogLabel.Content = "Execution Service Failed !"; }
                     }
                 });
@@ -276,10 +457,8 @@ namespace Ajan
               
             }
 
-            StartExecutionservice_btn.IsEnabled = false;
-          
-
-          //    Task.Delay(30000).ContinueWith(t => replaceRepos());
+            }
+            else { Console.WriteLine("process already running"); }
 
         }
 
@@ -291,6 +470,23 @@ namespace Ajan
         private void ExitEditor(object sender, RoutedEventArgs e)
         {
             //KillCmdAsync();
+            TripleStore_loadingGif.Visibility = Visibility.Hidden;
+            ExecutionService_loadingGif.Visibility = Visibility.Hidden;
+            Editor_loadingGif.Visibility = Visibility.Hidden;
+
+            tripleStore_txtbox.Text = " ";
+            execusionService_txtbox.Text = " ";
+            editor_txtbox.Text = " ";
+
+         
+            TripleStore.Running = false;
+            Editor.Running = false;
+            ExecutionService.Running = false;
+
+            TripleStore.Loaded = false ;
+            Editor.Loaded = false;
+            ExecutionService.Loaded = false;
+
             foreach (System.Diagnostics.Process x in  System.Diagnostics.Process.GetProcessesByName("cmd") )
 
         
@@ -298,8 +494,10 @@ namespace Ajan
                 Console.WriteLine("cmd to be killed");
                 Console.WriteLine(x.ProcessName) ;
                 Console.WriteLine(x.Id) ;  
-               x.CloseMainWindow();
-                x.Kill(); 
+              x.CloseMainWindow();
+                 x.Kill();
+        
+                
 
 
             }
@@ -321,10 +519,9 @@ namespace Ajan
             }
 
 
-            StartTriplestore_btn.IsEnabled = true;
-            StartEditor_btn.IsEnabled = true;
-            StartExecutionservice_btn.IsEnabled = true;
-            StartAjan_btn.IsEnabled = true;
+
+
+
 
 
 
@@ -332,6 +529,8 @@ namespace Ajan
 
 
         }
+
+ 
 
         private void checkJava(object sender, RoutedEventArgs e,  String javaPath )
         {
@@ -735,8 +934,10 @@ namespace Ajan
         {
 
 
+          
 
-
+            //   Application.Current.MainWindow.Height = 500;
+            // startExit.Height =10; 
             String path = getPath(paths.EditorInstall); 
             Console.WriteLine("full path is");
             Console.WriteLine(path);
@@ -1150,7 +1351,7 @@ namespace Ajan
                         setupProgressBar.Value +=  100.0/712 ; // Math.Round(100.0 / 66);
                         ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
 
-                        if (!String.IsNullOrEmpty(outLine.Data))
+                        if (!String.IsNullOrEmpty(outLine.Data) && !outLine.Data.Contains("--------")  )
                         {
                             oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
                             if (outLine.Data.Contains("BUILD SUCCESS")  )
@@ -1223,6 +1424,11 @@ namespace Ajan
                                 installationEnded = true; 
                                 Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
                                 setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+                                //loadingGif.Visibility = Visibility.Hidden;
+                                config_btn.Content = "       Reset       ";
+                                modifyConfig(SETUP_DONE, "true");
+
+
 
 
 
@@ -1426,5 +1632,7 @@ namespace Ajan
                 }
             }
         }
+
+      
     }
 }

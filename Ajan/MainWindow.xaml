@@ -1,4 +1,5 @@
 ﻿<Window 
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"  
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,31 +35,26 @@
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="61" Margin="67,85,0,0" VerticalAlignment="Top" Width="1169" Background="#FF525252" CornerRadius="10">
             <Rectangle HorizontalAlignment="Left" Height="396" Margin="893,-1,0,-336" Stroke="#FF1B1B1B" VerticalAlignment="Top" Width="5" Fill="#FF1B1B1B"/>
         </Border>
-
-        <Button x:Name="StartAjan_btn" Content="   Start AJAN                 " Click="startAjan" HorizontalAlignment="Left" Margin="10,580,0,0" VerticalAlignment="Top" Width="122" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" Grid.Column="3" FontFamily="L"/>
-        <Button x:Name="StartTriplestore_btn" Content="     Start Triple Store                 " Click="startTripleStore" HorizontalAlignment="Left" Margin="56,664,0,0" VerticalAlignment="Top" Width="202" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" Grid.Column="1" Grid.ColumnSpan="3"/>
-        <Button x:Name="StartEditor_btn" Click="startEditor" HorizontalAlignment="Left" Margin="102,664,0,0" VerticalAlignment="Top" Width="114" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" Grid.Column="3" Content="Start Editor"/>
-        <Button x:Name="StartExecutionservice_btn" Content="  Start Execution Service                 " Click="startExectionService" HorizontalAlignment="Left" Margin="259,664,0,0" VerticalAlignment="Top" Width="202" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" RenderTransformOrigin="-1.748,0.584" Grid.Column="3"/>
-        <Button x:Name="ExitAjan_btn" Content="    Exit AJAN          " Click="ExitEditor" Margin="195,580,344,0" VerticalAlignment="Top" Height="41" FontSize="18" Background="#FFCC4B37" Foreground="#FFF8FAFF" Grid.Column="3"/>
+        <Button x:Name="StartAjan_btn" Content="         Start AJAN                 " Click="startAjan" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" FontFamily="L" BorderBrush="#FF28A745" Margin="41,569,0,0" Grid.ColumnSpan="2" Grid.Column="2"/>
+        <Button x:Name="StartTriplestore_btn" Content="    Start Triple Store                 " Click="startTripleStore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" Margin="228,651,0,0" Grid.ColumnSpan="4"/>
+        <Button x:Name="StartEditor_btn" Click="startEditor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" Content="Start Editor" Margin="69,651,0,0" Grid.Column="3"/>
+        <Button x:Name="StartExecutionservice_btn" Content="  Start Execution Service                 " Click="startExectionService" HorizontalAlignment="Left" VerticalAlignment="Top" Width="230" Height="41" FontSize="18" Background="#FF28A745" Foreground="#FFF8FAFF" RenderTransformOrigin="-1.748,0.584" Margin="348,651,0,0" Grid.Column="3"/>
+        <Button x:Name="ExitAjan_btn" Content="         Exit AJAN          " Click="ExitEditor" VerticalAlignment="Top" Height="41" FontSize="18" Background="#FFCC4B37" Foreground="#FFF8FAFF" BorderBrush="#FF6C281D" Margin="198,569,283,0" Grid.Column="3"/>
         <Label x:Name="java_version_label" Content="" HorizontalAlignment="Left" Margin="159,98,0,0" VerticalAlignment="Top" Width="533" Height="40" Foreground="#FFF8FAFF" FontSize="18" FontFamily="Sylfaen" Grid.ColumnSpan="4"/>
         <Button x:Name="install_java_btn" Content="Install OpenJDK 1.8" Click="installJava" HorizontalAlignment="Left" Margin="564,97,0,0" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="3" Grid.ColumnSpan="3" />
         <Label x:Name="bower_version_label" Content="" HorizontalAlignment="Left" Margin="159,335,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="4"/>
-        <Grid Grid.ColumnSpan="4" Margin="229,178,14,609">
-            <Label x:Name="maven_version_label" Content="" HorizontalAlignment="Left" Margin="-73,0,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen"/>
-            <Button x:Name="install_Maven_btn" Content="Install Maven 3.9.9" Click="installMaven" HorizontalAlignment="Left" Margin="759,0,-117,0" Width="200" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Height="35" VerticalAlignment="Top"/>
-            <Button x:Name="path_maven_btn" Content="path to Maven 3.9.9" Click="pathToMaven" HorizontalAlignment="Left" Margin="511,2,0,0" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D"  />
-            <Image x:Name="maven_install_sign" HorizontalAlignment="Left" Margin="-125,-1,0,0" Width="30" Source="greenTick.png" RenderTransformOrigin="0.486,0.529" Height="59" VerticalAlignment="Top"/>
-        </Grid>
-        <Grid Grid.ColumnSpan="4" Margin="230,257,14,532">
-            <Label x:Name="node_version_label" Content="" HorizontalAlignment="Left" Margin="-73,0,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen"/>
-            <Button x:Name="path_nodejs_btn" Content="path to NodeJS 8.6" Click="pathToNodejs" HorizontalAlignment="Left" Margin="510,3,0,-1" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D"  />
-            <Image x:Name="node_install_sign" HorizontalAlignment="Left" Margin="-128,-12,0,-10" Width="30" Source="greenTick.png" RenderTransformOrigin="0.533,0.26"/>
-            <Button x:Name="install_Nodejs_btn" Content="Install NodeJS 8.6" Click="installNodejs" HorizontalAlignment="Left" Margin="758,-1,-117,0" Width="200" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Height="35" VerticalAlignment="Top"/>
-        </Grid>
+        <Button x:Name="install_Maven_btn" Content="Install Maven 3.9.9" Click="installMaven" HorizontalAlignment="Left" Width="200" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Height="35" VerticalAlignment="Top" Margin="564,178,0,0" Grid.ColumnSpan="3" Grid.Column="3"/>
+        <Button x:Name="path_maven_btn" Content="path to Maven 3.9.9" Click="pathToMaven" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D"  Margin="316,180,0,0" Grid.Column="3"  />
+        <Image x:Name="maven_install_sign" HorizontalAlignment="Left" Width="30" Source="greenTick.png" RenderTransformOrigin="0.486,0.529" Height="30" VerticalAlignment="Top" Margin="104,177,0,0"/>
+        <Label x:Name="maven_version_label" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Margin="156,178,0,0" Grid.ColumnSpan="4"/>
+        <Button x:Name="path_nodejs_btn" Content="path to NodeJS 8.6" Click="pathToNodejs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D"  Margin="316,260,0,0" Grid.Column="3"  />
+        <Button x:Name="install_Nodejs_btn" Content="Install NodeJS 8.6" Click="installNodejs" HorizontalAlignment="Left" Width="200" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Height="35" VerticalAlignment="Top" Margin="564,256,0,0" Grid.ColumnSpan="3" Grid.Column="3"/>
+        <Image x:Name="node_install_sign" HorizontalAlignment="Left" Width="30" Source="greenTick.png" RenderTransformOrigin="0.533,0.26" VerticalAlignment="Top" Margin="102,258,0,0"/>
+        <Label x:Name="node_version_label" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Margin="157,257,0,0" Grid.ColumnSpan="4"/>
         <Button x:Name="install_Bower_btn" Content="Install Bower" Click="installBower" HorizontalAlignment="Left" Margin="564,336,0,0" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="3" Grid.ColumnSpan="3"/>
         <Label x:Name="ember_version_label" Content="" HorizontalAlignment="Left" Margin="159,413,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FFF8FAFF" FontSize="18" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Sylfaen" Grid.ColumnSpan="4"/>
         <Button x:Name="install_Ember_btn" Content="Install Ember" Click="installEmber" HorizontalAlignment="Left" Margin="565,414,0,0" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="3" Grid.ColumnSpan="3"/>
-        <Button x:Name="config_btn" Content="    Configurations       " Click="configWindow" Margin="70,497,0,0" VerticalAlignment="Top" Height="41" FontWeight="Bold" FontSize="18" Background="#FFFFAE00" Foreground="#FF1B1B1B" Grid.Column="3" HorizontalAlignment="Left" Width="182"/>
+        <Button x:Name="config_btn" Content="       Setup       " Click="configWindow" Margin="70,494,0,0" VerticalAlignment="Top" Height="41" FontWeight="Bold" FontSize="18" Background="#FFFFAE00" Foreground="#FF1B1B1B" Grid.Column="3" HorizontalAlignment="Left" Width="180"/>
         <Image x:Name="java_install_sign" HorizontalAlignment="Left" Height="59" Margin="103,98,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.581,0.486"/>
         <Image x:Name="ember_install_sign" HorizontalAlignment="Left" Height="59" Margin="103,414,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.114,0.686"/>
         <Button x:Name="path_java_btn" Content="path to OpenJDK 1.8" Click="pathToJava" HorizontalAlignment="Left" Margin="316,97,0,0" VerticalAlignment="Top" Width="200" Height="35" FontWeight="Bold" FontSize="18" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="3"  />
@@ -84,7 +80,15 @@
             <Label x:Name="ProgressBarPercent" Content="0%" HorizontalAlignment="Left" Margin="423,-1,0,0" FontSize="15" FontWeight="Bold" RenderTransformOrigin="0.562,0.517" Height="30" VerticalAlignment="Top"/>
 
         </Grid>
+
+
         <Label x:Name="currentTaskLabel" Content="current task" HorizontalAlignment="Left" Margin="45,726,0,0" VerticalAlignment="Top" Width="277" Foreground="#FFFDFDFD" FontSize="15" MaxHeight="35" MaxWidth="1000" Grid.Column="3" HorizontalContentAlignment="Center" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+        <Image x:Name="TripleStore_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="2" Margin="46,656,613,136" Grid.ColumnSpan="2" />
+        <TextBlock x:Name="tripleStore_txtbox" HorizontalAlignment="Left" Margin="228,692,0,0" VerticalAlignment="Top" Width="273" Height="30" Foreground="White" FontSize="13" Grid.ColumnSpan="4" FontStyle="Italic"/>
+        <TextBlock x:Name="editor_txtbox" HorizontalAlignment="Left" Margin="69,692,0,0" VerticalAlignment="Top" Width="273" Height="30" Foreground="White" FontSize="13" Grid.Column="3" FontStyle="Italic"/>
+        <TextBlock x:Name="execusionService_txtbox" HorizontalAlignment="Left" Margin="349,692,0,0" VerticalAlignment="Top" Width="285" Height="30" Foreground="White" FontSize="13" Grid.Column="3" FontStyle="Italic"/>
+        <Image x:Name="Editor_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="3" Margin="222,656,348,136" />
+        <Image x:Name="ExecutionService_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="3" Margin="512,655,57,137" />
 
     </Grid>
 </Window>

@@ -78,6 +78,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -94,6 +95,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPF.Bootstrap, Version=0.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bootstrap.Wpf.0.0.9\lib\net45\WPF.Bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -164,6 +171,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="min-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Capture.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="3.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
