@@ -120,7 +120,6 @@ C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.csproj
 C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.exe
 C:\Users\hacan\source\repos\Ajan control panel - Copy\Ajan\obj\Debug\Ajan.pdb
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\WPF.Bootstrap.dll
-C:\Users\hacan\source\repos\Ajan control panel\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\WpfAnimatedGif.dll
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\WpfAnimatedGif.pdb
 C:\Users\hacan\source\repos\Ajan control panel\Ajan\bin\Debug\WpfAnimatedGif.xml

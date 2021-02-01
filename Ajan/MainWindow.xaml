@@ -83,12 +83,12 @@
 
 
         <Label x:Name="currentTaskLabel" Content="current task" HorizontalAlignment="Left" Margin="45,726,0,0" VerticalAlignment="Top" Width="277" Foreground="#FFFDFDFD" FontSize="15" MaxHeight="35" MaxWidth="1000" Grid.Column="3" HorizontalContentAlignment="Center" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-        <Image x:Name="TripleStore_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="2" Margin="46,656,613,136" Grid.ColumnSpan="2" />
         <TextBlock x:Name="tripleStore_txtbox" HorizontalAlignment="Left" Margin="228,692,0,0" VerticalAlignment="Top" Width="273" Height="30" Foreground="White" FontSize="13" Grid.ColumnSpan="4" FontStyle="Italic"/>
         <TextBlock x:Name="editor_txtbox" HorizontalAlignment="Left" Margin="69,692,0,0" VerticalAlignment="Top" Width="273" Height="30" Foreground="White" FontSize="13" Grid.Column="3" FontStyle="Italic"/>
         <TextBlock x:Name="execusionService_txtbox" HorizontalAlignment="Left" Margin="349,692,0,0" VerticalAlignment="Top" Width="285" Height="30" Foreground="White" FontSize="13" Grid.Column="3" FontStyle="Italic"/>
-        <Image x:Name="Editor_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="3" Margin="222,656,348,136" />
-        <Image x:Name="ExecutionService_loadingGif" gif:ImageBehavior.AnimatedSource="C:\Users\hacan\Downloads\3 (3).gif" Grid.Column="3" Margin="512,655,57,137" />
+        <Image x:Name="Editor_loadingGif" gif:ImageBehavior.AnimatedSource="loading.gif" Grid.Column="3" Margin="222,656,348,136" />
+        <Image x:Name="TripleStore_loadingGif" gif:ImageBehavior.AnimatedSource="loading.gif" Grid.Column="2" Margin="46,656,613,136" Grid.ColumnSpan="2" />
+        <Image x:Name="ExecutionService_loadingGif" gif:ImageBehavior.AnimatedSource="loading.gif"  Grid.Column="3" Margin="512,655,57,137"   />
 
     </Grid>
 </Window>
