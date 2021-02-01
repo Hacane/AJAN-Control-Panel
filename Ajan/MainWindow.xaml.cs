@@ -125,7 +125,6 @@ namespace Ajan
         private void startAjan(object sender, RoutedEventArgs e)
         {
             ExitEditor(new object(), new RoutedEventArgs());
-         
             startEditor(new object(), new RoutedEventArgs());
             startTripleStore(new object(), new RoutedEventArgs());
             startExectionService(new object(), new RoutedEventArgs());
