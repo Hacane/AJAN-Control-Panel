@@ -46,9 +46,10 @@ namespace Ajan
             StartTripleStore,
             StartEditor,
             StartServices,
-            StartAJAN,
             Nodedefinitionsttl,
-            editorDataTrig
+            editorDataTrig,
+            EditorDir,
+            ServiceDir
         }
 
 
@@ -114,11 +115,8 @@ namespace Ajan
 
 
 
-
             }
             catch {
-
-
 
                 if (System.Windows.Forms.MessageBox.Show("configurations file does not exists or is corrupt! \nWould you like to reset the configurations ?", "File Not Found or corrupt ! ", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning)
                     == System.Windows.Forms.DialogResult.Yes)
@@ -129,7 +127,6 @@ namespace Ajan
                 else {
                     System.Windows.Forms.MessageBox.Show("The Control Panel can't run without a configurations file\nPlease provide a valid configurations file and retry again", "File Not Found or corrupt ! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                     Environment.Exit(0); }
-                   
 
             }
 
@@ -179,10 +176,21 @@ namespace Ajan
 
         private void startAjan(object sender, RoutedEventArgs e)
         {
-            ExitEditor(new object(), new RoutedEventArgs());
-            startEditor(new object(), new RoutedEventArgs());
-            startTripleStore(new object(), new RoutedEventArgs());
-            startExectionService(new object(), new RoutedEventArgs());
+            if (!TripleStore.Running && !Editor.Running && !ExecutionService.Running)
+            {
+                ExitEditor(new object(), new RoutedEventArgs());
+                startEditor(new object(), new RoutedEventArgs());
+                startTripleStore(new object(), new RoutedEventArgs());
+                startExectionService(new object(), new RoutedEventArgs());
+            }
+            else 
+            {
+                closeTripleStore();
+                closeExecutionService();
+                closeEditor();
+                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(40, 167, 69));
+                StartAjan_btn.Content = "  Start All Services";
+            }
 
 
         }
@@ -208,11 +216,9 @@ namespace Ajan
                 double percent = 0;
                 TripleStore.Running = true;
                 TripleStore_loadingGif.Visibility = Visibility.Visible;
-
-
                 System.Diagnostics.Process cmd = new System.Diagnostics.Process();
-                cmd.StartInfo.FileName = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startTriplestore.bat");
-                cmd.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
+                cmd.StartInfo.FileName = getPath(paths.ServiceDir) +@"\startTriplestore.bat";
+                cmd.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
                 cmd.StartInfo.RedirectStandardError = true;
                 cmd.StartInfo.RedirectStandardOutput = true;
                 cmd.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
@@ -223,6 +229,8 @@ namespace Ajan
                 cmd.Start();
                 cmd.BeginOutputReadLine();
                 cmd.BeginErrorReadLine();
+                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
+                StartAjan_btn.Content = "  Stop All Services";
                 //  StartTriplestore_btn.IsEnabled = false; 
 
 
@@ -260,7 +268,8 @@ namespace Ajan
                                 var hp = new Hyperlink(new Run("http://localhost:8090"));
                                 hp.Click += (s, ee) => { System.Diagnostics.Process.Start("http://localhost:8090/workbench/repositories"); };
 
-                                tripleStore_txtbox.Text = "Running on server: ";
+                              //  tripleStore_txtbox.Text = "Running on server: " + "\uD83D\uDD17" + " "; // with hyperlink symbol 
+                                tripleStore_txtbox.Text = "Running on server: "  ;
                                 tripleStore_txtbox.Inlines.Add(hp);
 
 
@@ -323,8 +332,9 @@ namespace Ajan
 
 
                 var TestProcess = new System.Diagnostics.Process();
-                TestProcess.StartInfo.FileName = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-editor-master\startEditor.bat");
-                TestProcess.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-editor-master");
+            
+                TestProcess.StartInfo.FileName = getPath(paths.EditorDir) + @"\startEditor.bat";
+                TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
                 TestProcess.StartInfo.RedirectStandardInput = true;
                 TestProcess.StartInfo.RedirectStandardOutput = true;
                 TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
@@ -333,6 +343,8 @@ namespace Ajan
                 TestProcess.StartInfo.UseShellExecute = false;
                 TestProcess.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
+                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
+                StartAjan_btn.Content = "  Stop All Services";
                 Editor.ID = TestProcess.Id;
                 TestProcess.BeginOutputReadLine();
 
@@ -429,8 +441,10 @@ namespace Ajan
                 ExecutionService_loadingGif.Visibility = Visibility.Visible;
 
                 System.Diagnostics.Process cmd = new System.Diagnostics.Process();
-                cmd.StartInfo.FileName = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master\startAJAN.bat");
-                cmd.StartInfo.WorkingDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..\AJAN-service-master");
+    
+                cmd.StartInfo.FileName = getPath(paths.ServiceDir) + @"\startAJAN.bat";
+                cmd.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
+
                 //cmd.StartInfo.RedirectStandardInput = true;
                 // cmd.StartInfo.RedirectStandardOutput = true;
                 cmd.StartInfo.RedirectStandardError = true;
@@ -442,6 +456,8 @@ namespace Ajan
                 cmd.StartInfo.UseShellExecute = false;
                 cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 cmd.Start();
+                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
+                StartAjan_btn.Content = "  Stop All Services";
                 cmd.BeginOutputReadLine();
                 ExecutionService.ID = cmd.Id;
                 setupProgressBar.Value = 0;
@@ -1176,7 +1192,9 @@ namespace Ajan
                 Console.WriteLine(ServicePath);
                 String installPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath + @"\install_npm.bat"));
                 return installPath;
-            } else if (path == paths.EditorInstallDir) {
+            }
+            
+            else if (path == paths.EditorInstallDir) {
                 var pattern = "*" + "editor" + "*";
                 String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
@@ -1186,16 +1204,51 @@ namespace Ajan
             }
             else if (path == paths.StartTripleStore)
             {
+                var pattern = "*" + "service" + "*";
+                String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
+                Console.WriteLine("search path is");
+                Console.WriteLine(ServicePath);
+                String Path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath + @"\startTriplestore.bat"));
+                Console.WriteLine("path1");
+                Console.WriteLine(Environment.CurrentDirectory);
+                Console.WriteLine("path2");
+                Console.WriteLine(ServicePath + @"\startTriplestore.bat");
+                Console.WriteLine("combine 1+2");
+                Console.WriteLine(Path);
+                return Path;
+
             }
-            else if (path == paths.StartServices)
+            else if (path == paths.EditorDir)
             {
+                var pattern = "*" + "editor" + "*";
+                String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
+                Console.WriteLine("search path is");
+                Console.WriteLine(ServicePath);
+                String Path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath));
+                Console.WriteLine("path1");
+                Console.WriteLine(Environment.CurrentDirectory);
+                Console.WriteLine("path2");
+                Console.WriteLine(ServicePath );
+                Console.WriteLine("combine 1+2");
+                Console.WriteLine(Path);
+                return Path;
             }
-            else if (path == paths.StartEditor)
+            else if (path == paths.ServiceDir)
             {
+                var pattern = "*" + "service" + "*";
+                String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
+                Console.WriteLine("search path is");
+                Console.WriteLine(ServicePath);
+                String Path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath ));
+                Console.WriteLine("path1");
+                Console.WriteLine(Environment.CurrentDirectory);
+                Console.WriteLine("path2");
+                Console.WriteLine(ServicePath  );
+                Console.WriteLine("combine 1+2");
+                Console.WriteLine(Path);
+                return Path;
             }
-            else if (path == paths.StartAJAN)
-            {
-            }
+            
             else if (path == paths.Nodedefinitionsttl)
             {
                 var pattern = "*" + "editor" + "*";
@@ -1308,7 +1361,7 @@ namespace Ajan
 
         private void createRepoEditor_Data()
         {
-            String repoName = "Editor_Data";
+            String repoName = "editor_data";
             DateTime now = DateTime.Now;
 
 
