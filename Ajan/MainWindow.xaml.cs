@@ -29,13 +29,15 @@ namespace Ajan
 
     public partial class MainWindow : Window
     {
-        public const String JAVA_PATH =   "javaPath";
-        public const String MAVEN_PATH =  "mavenPath";
+        public const String JAVA_PATH = "javaPath";
+        public const String MAVEN_PATH = "mavenPath";
         public const String NODEJS_PATH = "nodejsPath";
-        public const String BOWER_PATH =  "bowerPath";
-        public const String EMBER_PATH =  "emberPath";
-        public const String GIT_PATH =    "gitPath";
-        public const String SETUP_DONE =  "setupDone";
+        public const String BOWER_PATH = "bowerPath";
+        public const String EMBER_PATH = "emberPath";
+        public const String GIT_PATH = "gitPath";
+        public const String SETUP_DONE = "setupDone";
+        public const String SERVICE_PATH = "servicePath";
+        public const String EDITOR_PATH = "editorPath";
 
         enum paths
         {
@@ -54,7 +56,7 @@ namespace Ajan
 
 
 
-        class Pr
+        class Pr // process tracking info
         {
             public int ID = 0;
             public bool Running = false;
@@ -69,8 +71,6 @@ namespace Ajan
         public MainWindow()
         {
 
-
-
             InitializeComponent();
             TripleStore_loadingGif.Visibility = Visibility.Hidden;
             Editor_loadingGif.Visibility = Visibility.Hidden;
@@ -80,20 +80,14 @@ namespace Ajan
             void Window_MouseDown(object sender, MouseButtonEventArgs e) { if (e.ChangedButton == MouseButton.Left) DragMove(); }
 
 
-            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))) {
-                Console.WriteLine("your OS Architecture is 64 bit ");
-            }
-            else
-            {
-                Console.WriteLine("your OS Architecture is 32 bit ");
-            }
-
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))) { Console.WriteLine("your OS Architecture is 64 bit "); }
+            else { Console.WriteLine("your OS Architecture is 32 bit "); }
+            KillRunningAjanProcesses();  // in case the app crashes and the processes still running or in case processes started from batch files before starting the gui. those processes will be killed
             checkConfigurationsFile();
             checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
             checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
             checkNode(new object(), new RoutedEventArgs(), readConfig(NODEJS_PATH));
-            checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
-            checkEmber(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
+            checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
             checkGit(new object(), new RoutedEventArgs(), readConfig(GIT_PATH));
             if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
 
@@ -116,7 +110,8 @@ namespace Ajan
 
 
             }
-            catch {
+            catch
+            {
 
                 if (System.Windows.Forms.MessageBox.Show("configurations file does not exists or is corrupt! \nWould you like to reset the configurations ?", "File Not Found or corrupt ! ", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning)
                     == System.Windows.Forms.DialogResult.Yes)
@@ -124,17 +119,19 @@ namespace Ajan
                     File.WriteAllText(@"..\..\configurations.json", File.ReadAllText(@"Empty_Configurations.json"));
                     Console.WriteLine("configurations file couldnt be found and an empty one is created");
                 }
-                else {
+                else
+                {
                     System.Windows.Forms.MessageBox.Show("The Control Panel can't run without a configurations file\nPlease provide a valid configurations file and retry again", "File Not Found or corrupt ! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                    Environment.Exit(0); }
-
+                    Environment.Exit(0);
+                }
             }
 
 
         }
 
 
-        public void modifyConfig(String key, String Value) {
+        public void modifyConfig(String key, String Value)
+        {
 
             using (StreamReader r = new StreamReader(@"..\..\configurations.json"))
             {
@@ -156,7 +153,8 @@ namespace Ajan
             {
                 var json = r.ReadToEnd();
                 r.Close();
-                try {
+                try
+                {
                     var jobj = Newtonsoft.Json.Linq.JObject.Parse(json);
                     Console.WriteLine(jobj[key]);
                     return jobj[key].ToString();
@@ -166,7 +164,6 @@ namespace Ajan
                 {
 
                     System.Windows.Forms.MessageBox.Show("configurations file's JSON data could not be parsed ! ", "JSON Parsing Error ! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-
                     return "";
                 }
 
@@ -174,50 +171,20 @@ namespace Ajan
             }
         }
 
-        private void startAjan(object sender, RoutedEventArgs e)
-        {
-            if (!TripleStore.Running && !Editor.Running && !ExecutionService.Running)
-            {
-                ExitEditor(new object(), new RoutedEventArgs());
-                startEditor(new object(), new RoutedEventArgs());
-                startTripleStore(new object(), new RoutedEventArgs());
-                startExectionService(new object(), new RoutedEventArgs());
-            }
-            else 
-            {
-                closeTripleStore();
-                closeExecutionService();
-                closeEditor();
-                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(40, 167, 69));
-                StartAjan_btn.Content = "  Start All Services";
-            }
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 
         private void startTripleStore(object sender, RoutedEventArgs e)
         {
-            if (!TripleStore.Running) {
+            if (!TripleStore.Running)
+            {
                 double percent = 0;
                 TripleStore.Running = true;
                 TripleStore_loadingGif.Visibility = Visibility.Visible;
                 System.Diagnostics.Process cmd = new System.Diagnostics.Process();
-                cmd.StartInfo.FileName = getPath(paths.ServiceDir) +@"\startTriplestore.bat";
+                cmd.StartInfo.FileName = "cmd.exe";
+                cmd.StartInfo.Arguments = "/c java -jar triplestore/target/triplestore-0.1-war-exec.jar --httpPort=8090";
                 cmd.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
                 cmd.StartInfo.RedirectStandardError = true;
                 cmd.StartInfo.RedirectStandardOutput = true;
@@ -231,15 +198,17 @@ namespace Ajan
                 cmd.BeginErrorReadLine();
                 StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
                 StartAjan_btn.Content = "  Stop All Services";
-                //  StartTriplestore_btn.IsEnabled = false; 
-
-
                 Console.WriteLine("triple store started");
                 Console.WriteLine("with Id =");
                 Console.WriteLine(cmd.Id);
                 TripleStore.ID = cmd.Id;
                 currentTaskLabel.Content = "Loading Triple Store";
                 setupProgressBar.Value = 0;
+
+
+
+
+
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
                     //* Do your stuff with the output (write to console/log/StringBuilder)
@@ -247,14 +216,20 @@ namespace Ajan
 
                     this.Dispatcher.Invoke(() =>
                     {
-                        percent += 0.8;
-                        setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
-                        ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
 
-                        if (!String.IsNullOrEmpty(outLine.Data)) {
-                            if (!TripleStore.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  "; }
 
-                            if (outLine.Data.Contains("Starting ProtocolHandler")) {
+                        if (!String.IsNullOrEmpty(outLine.Data) && TripleStore.Running)
+                        {
+                            if (!TripleStore.Loaded)
+                            {
+                                percent += 0.8;
+                                setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
+                                ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                            }
+
+                            if (outLine.Data.Contains("Starting ProtocolHandler"))
+                            {
                                 TripleStore.Loaded = true;
                                 percent = 100;
                                 setupProgressBar.Value = 100;
@@ -264,12 +239,13 @@ namespace Ajan
 
 
                                 oneLinerLogLabel.Content = "Triple Store started Successfully !";
+
                                 TripleStore_loadingGif.Visibility = Visibility.Hidden;
                                 var hp = new Hyperlink(new Run("http://localhost:8090"));
                                 hp.Click += (s, ee) => { System.Diagnostics.Process.Start("http://localhost:8090/workbench/repositories"); };
 
-                              //  tripleStore_txtbox.Text = "Running on server: " + "\uD83D\uDD17" + " "; // with hyperlink symbol 
-                                tripleStore_txtbox.Text = "Running on server: "  ;
+                                //  tripleStore_txtbox.Text = "Running on server: " + "\uD83D\uDD17" + " "; // with hyperlink symbol 
+                                tripleStore_txtbox.Text = "Running on server: ";
                                 tripleStore_txtbox.Inlines.Add(hp);
 
 
@@ -301,15 +277,7 @@ namespace Ajan
 
         }
 
-        public void KillCmd()
-        {
-            Array.ForEach(System.Diagnostics.Process.GetProcessesByName("cmd"), x => x.CloseMainWindow());
-        }
 
-        public async void KillCmdAsync()
-        {
-            await Task.Run(() => KillCmd());
-        }
 
 
 
@@ -332,8 +300,8 @@ namespace Ajan
 
 
                 var TestProcess = new System.Diagnostics.Process();
-            
-                TestProcess.StartInfo.FileName = getPath(paths.EditorDir) + @"\startEditor.bat";
+                TestProcess.StartInfo.FileName = "cmd.exe";
+                TestProcess.StartInfo.Arguments = "/c ember clean-tmp & ember serve";
                 TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
                 TestProcess.StartInfo.RedirectStandardInput = true;
                 TestProcess.StartInfo.RedirectStandardOutput = true;
@@ -365,8 +333,9 @@ namespace Ajan
                         percent += 100.0 / 750;
 
                         //   if (( TripleStore.Loaded && ExecutionService.Loaded) || (!TripleStore.Running && !ExecutionService.Running) || (!TripleStore.Running && ExecutionService.Loaded) || (TripleStore.Loaded && !ExecutionService.Running) )  // either exection service and triplestore not running or they are running but finished loading 
-                        if ((TripleStore.Loaded || !TripleStore.Running) && (ExecutionService.Loaded || !ExecutionService.Running))  // either exection service and triplestore not running or they are running but finished loading 
+                        if ((TripleStore.Loaded || !TripleStore.Running) && (ExecutionService.Loaded || !ExecutionService.Running) && Editor.Running)  // either exection service and triplestore not running or they are running but finished loading 
                         {
+
                             currentTaskLabel.Content = "Loading AJAN Editor";
                             setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
                             ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
@@ -380,7 +349,7 @@ namespace Ajan
                             if (!Editor.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  "; }
 
 
-                            if (outLine.Data.Contains("Build successful") || outLine.Data.Contains("Slowest Nodes")  )
+                            if (outLine.Data.Contains("Build successful") || outLine.Data.Contains("Slowest Nodes"))
                             {
                                 Editor.Loaded = true;
                                 percent = 100;
@@ -441,8 +410,8 @@ namespace Ajan
                 ExecutionService_loadingGif.Visibility = Visibility.Visible;
 
                 System.Diagnostics.Process cmd = new System.Diagnostics.Process();
-    
-                cmd.StartInfo.FileName = getPath(paths.ServiceDir) + @"\startAJAN.bat";
+                cmd.StartInfo.FileName = "cmd.exe";
+                cmd.StartInfo.Arguments = "/c java -Dtriplestore.initialData.agentFolderPath=executionservice/use-case/agents -Dtriplestore.initialData.domainFolderPath=executionservice/use-case/domains -Dtriplestore.initialData.serviceFolderPath=executionservice/use-case/services -Dtriplestore.initialData.behaviorsFolderPath=executionservice/use-case/behaviors -Dpf4j.mode=development -Dserver.port=8080 -DloadTTLFiles=true -Dpf4j.pluginsDir=pluginsystem/plugins -Dtriplestore.url=http://localhost:8090/rdf4j -jar executionservice/target/executionservice-0.1.jar";
                 cmd.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
 
                 //cmd.StartInfo.RedirectStandardInput = true;
@@ -487,7 +456,7 @@ namespace Ajan
                     {
 
                         percent += 100.0 / 66;
-                        if ((TripleStore.Running && TripleStore.Loaded) || !TripleStore.Running)
+                        if ((TripleStore.Loaded || !TripleStore.Running) && !ExecutionService.Loaded && ExecutionService.Running)
                         {
                             currentTaskLabel.Content = "Loading Execution Service";
                             setupProgressBar.Value = Math.Round(percent);
@@ -503,7 +472,8 @@ namespace Ajan
                             }
 
 
-                            if (outLine.Data.Contains("Started Application")) {
+                            if (outLine.Data.Contains("Started Application"))
+                            {
                                 ExecutionService.Loaded = true;
                                 percent = 100;
                                 setupProgressBar.Value = 100;
@@ -534,14 +504,38 @@ namespace Ajan
         }
 
 
+        private void startAjan(object sender, RoutedEventArgs e)
+        {
+            if (!TripleStore.Running && !Editor.Running && !ExecutionService.Running)
+            {
+                ExitEditor(new object(), new RoutedEventArgs());
+                startEditor(new object(), new RoutedEventArgs());
+                startTripleStore(new object(), new RoutedEventArgs());
+                startExectionService(new object(), new RoutedEventArgs());
+            }
+            else
+            {
+                closeTripleStore();
+                closeExecutionService();
+                closeEditor();
+                StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(40, 167, 69));
+                StartAjan_btn.Content = "  Start All Services";
 
+                ResetProgressInfo();
+
+
+
+            }
+
+
+        }
 
 
 
         private void ExitEditor(object sender, RoutedEventArgs e)
         {
 
-
+            // method 1 -> kill all processes under the name of cmd or java or node
             /*foreach (System.Diagnostics.Process x in  System.Diagnostics.Process.GetProcessesByName("cmd") )
             {
                 Console.WriteLine("cmd to be killed");
@@ -567,6 +561,8 @@ namespace Ajan
                 Console.WriteLine(x.Id);
                 x.Kill();
             }*/
+
+            // method 2 -> kill only processes surely created by our processes 
             closeTripleStore();
             closeExecutionService();
             closeEditor();
@@ -583,7 +579,8 @@ namespace Ajan
 
 
 
-        private void closeTripleStore() {
+        private void closeTripleStore()
+        {
 
             TripleStore_loadingGif.Visibility = Visibility.Hidden;
             tripleStore_txtbox.Text = " ";
@@ -593,7 +590,8 @@ namespace Ajan
 
         }
 
-        private void closeExecutionService() {
+        private void closeExecutionService()
+        {
 
             ExecutionService_loadingGif.Visibility = Visibility.Hidden;
             execusionService_txtbox.Text = " ";
@@ -604,10 +602,10 @@ namespace Ajan
         }
 
 
-        private void closeEditor() {
+        private void closeEditor()
+        {
 
             Editor_loadingGif.Visibility = Visibility.Hidden;
-
             editor_txtbox.Text = " ";
             KillProcessAndChildren(Editor.ID);
             Editor.Running = false;
@@ -642,6 +640,70 @@ namespace Ajan
             }
         }
 
+        public void KillCmd()
+        {
+            Array.ForEach(System.Diagnostics.Process.GetProcessesByName("cmd"), x => x.CloseMainWindow());
+        }
+
+        public async void KillCmdAsync()
+        {
+            await Task.Run(() => KillCmd());
+        }
+
+
+
+        public void KillRunningAjanProcesses()
+        {
+
+            Console.WriteLine("try to find java or node");
+            foreach (String name in new List<string>(new string[] { "java", "node" }))
+            {
+                foreach (System.Diagnostics.Process x in System.Diagnostics.Process.GetProcessesByName(name))
+                {
+                    try
+                    {
+                         
+                        using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + x.Id))
+                        using (ManagementObjectCollection objects = searcher.Get())
+                        {
+                            String cmd = objects.Cast<ManagementBaseObject>().SingleOrDefault()?["CommandLine"]?.ToString();
+                            Console.WriteLine(objects.Cast<ManagementBaseObject>().SingleOrDefault()?["CommandLine"]?.ToString());
+                            if (cmd.Contains("triplestore") || cmd.Contains("ember"))
+                            {
+                                Console.WriteLine("java/node process of AJAN being killed");
+                                x.Kill();
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("error in closing java or node process");
+                    }
+
+                }
+
+            }
+        }
+        private void ResetProgressInfo()
+        {
+            try
+            {
+                oneLinerLogLabel.Content = "real time application status...";
+                currentTaskLabel.Content = "Current Task";
+                setupProgressBar.Value = 0;
+                ProgressBarPercent.Content = "0%";
+                Console.WriteLine("Reset Done");
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("Reset NOT Done");
+                Console.WriteLine(e.Message);
+
+            }
+        }
+
+
         private void checkJava(object sender, RoutedEventArgs e, String javaPath)
         {
 
@@ -654,9 +716,7 @@ namespace Ajan
                 psi.RedirectStandardError = true;
                 psi.UseShellExecute = false;
                 psi.CreateNoWindow = true;
-
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-
                 string strOutput;
                 try
                 {
@@ -664,11 +724,9 @@ namespace Ajan
                     if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                 }
                 catch { strOutput = pr.StandardError.ReadLine(); }
+                Console.WriteLine("JAVA version reading is " + strOutput);
 
-                Console.WriteLine("reading is " + strOutput);
 
-                path_java_btn.Visibility = Visibility.Hidden;
-                install_java_btn.Visibility = Visibility.Hidden;
 
                 if (strOutput.Contains("not"))
                 {
@@ -685,7 +743,8 @@ namespace Ajan
 
                 java_version_label.Content = "your JAVA version is OpenJDK " + strOutput.Split(' ')[2].Replace("\"", "");
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
+                path_java_btn.Visibility = Visibility.Hidden;
+                install_java_btn.Visibility = Visibility.Hidden;
 
             }
 
@@ -698,14 +757,7 @@ namespace Ajan
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
-
-
-
-
-
             }
-
-
         }
 
 
@@ -713,39 +765,33 @@ namespace Ajan
         {
             try
             {
-                path_maven_btn.Visibility = Visibility.Hidden;
-                install_Maven_btn.Visibility = Visibility.Hidden;
 
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
-                //psi.FileName = @"C:\Users\hacan\source\repos\Ajan\Ajan\mvnVersion.cmd";
                 psi.WorkingDirectory = path;
-              psi.EnvironmentVariables["JAVA_HOME"] = readConfig(JAVA_PATH).Replace(@"\bin", ""); 
-                    Console.WriteLine( "JAVA_HOME in Maven" );
-                    Console.WriteLine(readConfig(JAVA_PATH));
-                    Console.WriteLine(readConfig(JAVA_PATH).Replace(@"\bin", ""));
-
+                psi.EnvironmentVariables["JAVA_HOME"] = readConfig(JAVA_PATH).Replace(@"\bin", "");
+                Console.WriteLine("JAVA_HOME in Maven");
+                Console.WriteLine(readConfig(JAVA_PATH));
+                Console.WriteLine(readConfig(JAVA_PATH).Replace(@"\bin", ""));
                 psi.Arguments = @"/C mvn -version";
                 psi.RedirectStandardError = true;
                 psi.CreateNoWindow = true;
                 psi.RedirectStandardOutput = true;
                 psi.UseShellExecute = false;
-
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
                 string strOutput;
-                try { strOutput = pr.StandardOutput.ReadLine();
-                
-           
-
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadLine();
                     Console.WriteLine("Maven output in StandardOutput x");
                     if (String.IsNullOrEmpty(strOutput))
                     { throw new Exception(); }
                 }
-                catch { strOutput = pr.StandardError.ReadLine();
-                    Console.WriteLine("Maven output in StandardError", strOutput);
+                catch
+                {
+                    strOutput = pr.StandardError.ReadLine();
+                    Console.WriteLine(strOutput);
                     Console.WriteLine("Maven output in StandardError z");
-
-
                 }
 
                 if (strOutput.Contains("not"))
@@ -753,30 +799,29 @@ namespace Ajan
                     throw new Exception(" Mavenn couldn't be found on this machine!");
                 }
 
+                if (strOutput.Contains("JAVA_HOME"))
+                {
+                    throw new Exception(" JAVA must be provided first !");
+                }
+
                 if (!strOutput.Contains("3.3.9"))
                 {
                     throw new Exception($"you have {strOutput.Split(' ')[2]} version! you need 3.3.9");
                 }
 
-
                 maven_version_label.Content = "your Maven version is " + strOutput.Split(' ')[2];
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
+                path_maven_btn.Visibility = Visibility.Hidden;
+                install_Maven_btn.Visibility = Visibility.Hidden;
             }
 
             catch (Exception ex)
             {
-
                 maven_version_label.Content = ex.Message;
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
-
-
             }
-
-
-
         }
 
         private void checkNode(object sender, RoutedEventArgs e, String path)
@@ -784,13 +829,13 @@ namespace Ajan
 
             try
             {
-                install_Nodejs_btn.Visibility = Visibility.Hidden;
-                path_nodejs_btn.Visibility = Visibility.Hidden;
+
 
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 //psi.FileName = @"C:\Users\hacan\source\repos\Ajan\Ajan\mvnVersion.cmd";
                 psi.WorkingDirectory = path;
+                psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";";
                 psi.Arguments = "/c node --version";
                 psi.RedirectStandardError = true;
                 psi.CreateNoWindow = true;
@@ -799,9 +844,10 @@ namespace Ajan
 
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
 
-
                 string strOutput;
-                try { strOutput = pr.StandardOutput.ReadLine();
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadLine();
                     if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
@@ -810,14 +856,14 @@ namespace Ajan
                 {
                     throw new Exception(" NodeJS couldn't be found on this machine!");
                 }
-
                 if (!strOutput.Contains("8.6"))
                 {
                     throw new Exception($"you have {strOutput.Replace("v", "")} version! you need 8.6");
                 }
-
                 node_version_label.Content = "your NodeJS version is " + strOutput.Replace("v", "");
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
+                install_Nodejs_btn.Visibility = Visibility.Hidden;
+                path_nodejs_btn.Visibility = Visibility.Hidden;
 
             }
             catch (Exception ex)
@@ -826,28 +872,19 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
-
             }
-
-
         }
 
         private void installJava(object sender, RoutedEventArgs e)
         {
-
-
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432")))
             {
                 System.Diagnostics.Process.Start("https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_windows_hotspot_8u282b08.msi");
-
             }
             else
             {
                 System.Diagnostics.Process.Start("https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x86-32_windows_hotspot_8u282b08.msi");
-
-
             }
-
         }
 
         private void checkBower(object sender, RoutedEventArgs e, String path)
@@ -855,10 +892,6 @@ namespace Ajan
 
             try
             {
-                //tick.Source = new BitmapImage(new Uri(@"C:\Users\hacan\Downloads\Red-Cross-PNG-Transparent.png"));
-
-                install_Bower_btn.Visibility = Visibility.Hidden;
-                path_bower_btn.Visibility = Visibility.Hidden;
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c bower -version";
@@ -868,26 +901,23 @@ namespace Ajan
                 psi.RedirectStandardOutput = true;
                 psi.UseShellExecute = false;
                 psi.CreateNoWindow = true;
-
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-
-
                 string strOutput;
-                try { strOutput = pr.StandardOutput.ReadLine();
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadLine();
                     if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
 
-
                 if (strOutput.Contains("not"))
                 {
-
-
                     throw new Exception(" Bower couldn't be found on this machine!");
                 }
                 bower_version_label.Content = "your Bower version is " + strOutput;
                 bower_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
+                install_Bower_btn.Visibility = Visibility.Hidden;
+                path_bower_btn.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -904,8 +934,7 @@ namespace Ajan
         {
             try
             {
-                install_Ember_btn.Visibility = Visibility.Hidden;
-                path_ember_btn.Visibility = Visibility.Hidden;
+
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c ember --version";
@@ -915,35 +944,28 @@ namespace Ajan
                 psi.RedirectStandardOutput = true;
                 psi.UseShellExecute = false;
                 psi.CreateNoWindow = true;
-
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-                //string strOutput = pr.StandardOutput.ReadLine().Split(' ')[1].Replace("\"", "");  
-
                 string strOutput;
-                try { strOutput = pr.StandardOutput.ReadToEnd();
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadToEnd();
                     if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
-
-
-
                 if (strOutput.Contains("not recognized"))
                 {
                     throw new Exception(" Ember couldn't be found on this machine!");
                 }
-
-                if (strOutput.Contains("ember-cli:")) {
+                if (strOutput.Contains("ember-cli:"))
+                {
                     int position = strOutput.IndexOf("ember-cli:") + "ember-cli:".Length;
                     strOutput = strOutput.Substring(position, 7);
                 }
-
                 ember_version_label.Content = "your Ember version is" + strOutput;
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
-
+                install_Ember_btn.Visibility = Visibility.Hidden;
+                path_ember_btn.Visibility = Visibility.Hidden;
             }
-
-
             catch (Exception ex)
             {
                 Console.WriteLine("Exception is " + ex.Message);
@@ -954,12 +976,135 @@ namespace Ajan
             }
         }
 
+
+        private void checkEmberAndBower(object sender, RoutedEventArgs e, String emberPath, String bowerPath)
+        {
+            bool emberFound = false;
+            bool bowerFound = false;
+            try
+            {
+
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                psi.FileName = "cmd.exe";
+                psi.Arguments = "/c ember --version";
+                psi.WorkingDirectory = emberPath;
+                psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
+                psi.RedirectStandardError = true;
+                psi.RedirectStandardOutput = true;
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                string strOutput;
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadToEnd();
+                    if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
+                }
+                catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
+                if (strOutput.Contains("not recognized"))
+                {
+                    throw new Exception(" Ember couldn't be found on this machine!");
+                }
+                if (strOutput.Contains("ember-cli:"))
+                {
+                    int position = strOutput.IndexOf("ember-cli:") + "ember-cli:".Length;
+                    strOutput = strOutput.Substring(position, 6);
+                }
+
+
+                ember_version_label.Content = "your Ember version is " + strOutput;
+                emberFound = true;
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception is " + ex.Message);
+                ember_version_label.Content = "Ember couldn't be found";
+                ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
+                install_Ember_btn.Visibility = Visibility.Visible;
+                path_ember_btn.Visibility = Visibility.Visible;
+            }
+
+
+
+
+
+
+
+
+            try
+            {
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                psi.FileName = "cmd.exe";
+                psi.Arguments = "/c bower -version";
+                psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
+                psi.WorkingDirectory = bowerPath;
+                psi.RedirectStandardError = true;
+                psi.RedirectStandardOutput = true;
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                string strOutput;
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadLine();
+                    if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
+                }
+                catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
+
+                if (strOutput.Contains("not"))
+                {
+                    throw new Exception(" Bower couldn't be found on this machine!");
+                }
+
+                ember_version_label.Content = ember_version_label.Content + " And Bower version is " + strOutput;
+                bowerFound = true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception is " + ex.Message);
+                ember_version_label.Content = ember_version_label.Content + " And Bower couldn't be found";
+                ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
+                install_Ember_btn.Visibility = Visibility.Visible;
+                path_ember_btn.Visibility = Visibility.Visible;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if (emberFound && bowerFound)
+            {
+                ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
+                install_Ember_btn.Visibility = Visibility.Hidden;
+                path_ember_btn.Visibility = Visibility.Hidden;
+
+            }
+
+            if (!emberFound && !bowerFound)
+            {
+                ember_version_label.Content = "Ember And Bower couldn't be found!";
+        
+
+            }
+        }
+
+
+
         private void checkGit(object sender, RoutedEventArgs e, String path)
         {
             try
             {
-                install_Git_btn.Visibility = Visibility.Hidden;
-                path_Git_btn.Visibility = Visibility.Hidden;
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
                 psi.FileName = "cmd.exe";
                 psi.Arguments = "/c git --version";
@@ -969,10 +1114,7 @@ namespace Ajan
                 psi.RedirectStandardOutput = true;
                 psi.UseShellExecute = false;
                 psi.CreateNoWindow = true;
-
                 System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-                //string strOutput = pr.StandardOutput.ReadLine().Split(' ')[1].Replace("\"", "");  
-
                 string strOutput;
                 try
                 {
@@ -980,27 +1122,20 @@ namespace Ajan
                     if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
-
-
-
                 if (strOutput.Contains("not recognized"))
                 {
                     throw new Exception(" Git couldn't be found on this machine!");
                 }
-
                 if (strOutput.Contains("git version"))
                 {
                     int position = strOutput.IndexOf("git version") + "git version".Length;
                     strOutput = strOutput.Substring(position, 7);
                 }
-
                 git_version_label.Content = "your Git version is" + strOutput;
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
-
+                install_Git_btn.Visibility = Visibility.Hidden;
+                path_Git_btn.Visibility = Visibility.Hidden;
             }
-
-
             catch (Exception ex)
             {
                 Console.WriteLine("Exception is " + ex.Message);
@@ -1010,6 +1145,55 @@ namespace Ajan
                 path_Git_btn.Visibility = Visibility.Visible;
             }
         }
+
+
+
+        private void checkServiceAndEditor(object sender, RoutedEventArgs e, String path)
+        {
+            try
+            {
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                psi.FileName = "cmd.exe";
+                psi.Arguments = "/c git --version";
+                psi.WorkingDirectory = path;
+                psi.EnvironmentVariables["PATH"] = readConfig(GIT_PATH);
+                psi.RedirectStandardError = true;
+                psi.RedirectStandardOutput = true;
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                string strOutput;
+                try
+                {
+                    strOutput = pr.StandardOutput.ReadToEnd();
+                    if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
+                }
+                catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
+                if (strOutput.Contains("not recognized"))
+                {
+                    throw new Exception(" Git couldn't be found on this machine!");
+                }
+                if (strOutput.Contains("git version"))
+                {
+                    int position = strOutput.IndexOf("git version") + "git version".Length;
+                    strOutput = strOutput.Substring(position, 7);
+                }
+                git_version_label.Content = "your Git version is" + strOutput;
+                git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
+                install_Git_btn.Visibility = Visibility.Hidden;
+                path_Git_btn.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception is " + ex.Message);
+                git_version_label.Content = " Git couldn't be found on this machine!";
+                git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
+                install_Git_btn.Visibility = Visibility.Visible;
+                path_Git_btn.Visibility = Visibility.Visible;
+            }
+        }
+
+
 
         private void installMaven(object sender, RoutedEventArgs e)
         {
@@ -1025,44 +1209,53 @@ namespace Ajan
             {
                 // for 64 bit architecture
                 System.Diagnostics.Process.Start("https://nodejs.org/download/release/v8.6.0/node-v8.6.0-x64.msi");
-
-
             }
             else
             {
                 // for 32 bit architecture
                 System.Diagnostics.Process.Start("https://nodejs.org/download/release/v8.6.0/node-v8.6.0-x86.msi");
-
-
             }
-
-
-
-
         }
 
         private void installBower(object sender, RoutedEventArgs e)
         {
-            /*            var TestProcess = new System.Diagnostics.Process();
-                        TestProcess.StartInfo.FileName = "install_bower.bat";
-                        // TestProcess.StartInfo.WorkingDirectory = @"C:\Users\hacan\Documents\AJAN\ajan-editor\";
-                        TestProcess.Start();*/
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                // System.Windows.Forms.DialogResult result = fbd.ShowDialog();
 
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-            psi.FileName = "cmd.exe";
-            psi.Arguments = "/c npm install -g bower";
-            psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
-            // psi.WorkingDirectory = path;
+                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    //   string[] files = Directory.GetFiles(fbd.SelectedPath);
+                    string path = fbd.SelectedPath;
 
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
+                    System.Windows.Forms.MessageBox.Show("You have selected this path for AJAN Editor: \n " + path, "Message");
+                    modifyConfig(EDITOR_PATH, path);
+                    Console.WriteLine(readConfig(EDITOR_PATH));
+                    // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
+                    /*      try
+                          {
+                              var name = "PATH";
+                              var scope = EnvironmentVariableTarget.User; // or User
+                              var oldValue = Environment.GetEnvironmentVariable(name, scope);
+                              var newValue = oldValue + @";" + path;
+                              //  Environment.SetEnvironmentVariable(name, newValue, scope);
 
-            System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
 
 
 
-
+                              System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                              psi.FileName = "Ajan.exe";
+                              psi.EnvironmentVariables["Path"] = newValue;
+                              psi.UseShellExecute = false;
+                              psi.CreateNoWindow = true;
+                              System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                              Environment.Exit(-1);
+                          }
+                          catch (Exception ex) { Console.WriteLine(ex.Message); }*/
+                }
+            }
         }
+
 
         private void installEmber(object sender, RoutedEventArgs e)
         {
@@ -1070,24 +1263,41 @@ namespace Ajan
             psi.FileName = "cmd.exe";
             psi.Arguments = "/c npm install -g ember-cli";
             psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
-            // psi.WorkingDirectory = path;
-
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
-
             System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+        }     
+        
+        private void installEmberAndBower(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+            psi.FileName = "cmd.exe";
+            psi.Arguments = "/c npm install -g ember-cli";
+            psi.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+
+
+            System.Diagnostics.ProcessStartInfo psi2 = new System.Diagnostics.ProcessStartInfo();
+            psi2.FileName = "cmd.exe";
+            psi2.Arguments = "/c npm install -g bower";
+            psi2.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH);
+            psi2.UseShellExecute = false;
+            psi2.CreateNoWindow = true;
+            System.Diagnostics.Process pr2 = System.Diagnostics.Process.Start(psi2);
+
+
         }
 
         private void installGit(object sender, RoutedEventArgs e)
         {
-  
             System.Diagnostics.Process.Start("https://github.com/git-for-windows/git/releases/download/v2.30.1.windows.1/Git-2.30.1-64-bit.exe");
-      
         }
 
 
 
-        
+
 
 
 
@@ -1109,53 +1319,16 @@ namespace Ajan
 
         private void configWindow(object sender, RoutedEventArgs e)
         {
-
-
-
-
-            //   Application.Current.MainWindow.Height = 500;
-            // startExit.Height =10; 
-            String path = getPath(paths.EditorInstall);
-            Console.WriteLine("full path is");
-            Console.WriteLine(path);
-
-
-
-
             try
             {
-
-
-                build_service();
-
-
-
-
-                /*               if (build_editor() != "SUCCESS")
-                               {
-                                   throw new Exception($"Editor build Failed !");
-                               }
-                               Console.WriteLine("editor build end");
-
-
-                               startTripleStore(new object(), new RoutedEventArgs());
-                               Console.WriteLine("triple store running ");
-
-                               System.Threading.Thread.Sleep(10000);
-                               Console.WriteLine("create repo");
-
-
-
-                               createRepo();
-                               Console.WriteLine("repo created");
-                               process_info_label.Content = "AJAN Configurations done!";*/
+                  build_service();
+            //  build_editor();
             }
             catch (Exception exception)
             {
                 Console.WriteLine("Error !!!");
                 Console.WriteLine(exception.Message);
             }
-
         }
 
 
@@ -1174,7 +1347,8 @@ namespace Ajan
                 String installPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath + @"\installAJAN.bat"));
                 return installPath;
 
-            } if (path == paths.ServiceInstallDir)
+            }
+            if (path == paths.ServiceInstallDir)
             {
 
                 var pattern = "*" + "service" + "*";
@@ -1185,7 +1359,8 @@ namespace Ajan
                 return installPath;
 
             }
-            else if (path == paths.EditorInstall) {
+            else if (path == paths.EditorInstall)
+            {
                 var pattern = "*" + "editor" + "*";
                 String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
@@ -1193,8 +1368,9 @@ namespace Ajan
                 String installPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath + @"\install_npm.bat"));
                 return installPath;
             }
-            
-            else if (path == paths.EditorInstallDir) {
+
+            else if (path == paths.EditorInstallDir)
+            {
                 var pattern = "*" + "editor" + "*";
                 String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
@@ -1220,6 +1396,7 @@ namespace Ajan
             }
             else if (path == paths.EditorDir)
             {
+                if (!String.IsNullOrEmpty(readConfig(EDITOR_PATH))) { return readConfig(EDITOR_PATH); }
                 var pattern = "*" + "editor" + "*";
                 String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
@@ -1228,27 +1405,40 @@ namespace Ajan
                 Console.WriteLine("path1");
                 Console.WriteLine(Environment.CurrentDirectory);
                 Console.WriteLine("path2");
-                Console.WriteLine(ServicePath );
+                Console.WriteLine(ServicePath);
                 Console.WriteLine("combine 1+2");
                 Console.WriteLine(Path);
                 return Path;
             }
             else if (path == paths.ServiceDir)
             {
-                var pattern = "*" + "service" + "*";
-                String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
-                Console.WriteLine("search path is");
-                Console.WriteLine(ServicePath);
-                String Path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath ));
-                Console.WriteLine("path1");
-                Console.WriteLine(Environment.CurrentDirectory);
-                Console.WriteLine("path2");
-                Console.WriteLine(ServicePath  );
-                Console.WriteLine("combine 1+2");
-                Console.WriteLine(Path);
-                return Path;
+                if (!String.IsNullOrEmpty(readConfig(SERVICE_PATH))) { return readConfig(SERVICE_PATH); }
+                
+                try
+                {
+                    var pattern = "*" + "service" + "*";
+                    String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
+                    Console.WriteLine("search path is");
+                    Console.WriteLine(ServicePath);
+                    String Path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, ServicePath));
+                    Console.WriteLine("path1");
+                    Console.WriteLine(Environment.CurrentDirectory);
+                    Console.WriteLine("path2");
+                    Console.WriteLine(ServicePath);
+                    Console.WriteLine("combine 1+2");
+                    Console.WriteLine(Path);
+                    return Path;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return "";
+                }
+
+
+
             }
-            
+
             else if (path == paths.Nodedefinitionsttl)
             {
                 var pattern = "*" + "editor" + "*";
@@ -1277,16 +1467,7 @@ namespace Ajan
             createRepoNode_Definitions();   // creates repo if it doesnt exists or do nothing if it exists // overloading the first 
             updateRepo("agents"); updateRepo("services"); updateRepo("domain"); updateRepo("behaviors");
         }
-
-        private void replaceRepo(String reponame) {
-            Console.WriteLine($" {reponame} Repo replacement started !!!");
-
-            String data = readRepo(reponame);
-            removeRepos(reponame);
-            createRepowithData(reponame, data);
-        }
-
-
+ 
 
         private String readRepo(String repoName)
         {
@@ -1305,19 +1486,22 @@ namespace Ajan
 
 
                 }
-                else if (response.Content.Contains("Unknown")) {
+                else if (response.Content.Contains("Unknown"))
+                {
 
                     Console.WriteLine($"{repoName} repo does NOT exist !  ");
                 }
 
-                else {
+                else
+                {
                     Console.WriteLine($"{repoName.ToUpper()}   --->    Reposiotory exists and not empty  ");
 
                 }
 
                 return response.Content;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine("cant read repo " + e.Message);
                 return "cant find the repo";
             }
@@ -1356,7 +1540,7 @@ namespace Ajan
             request2.AddParameter("text/turtle", data, ParameterType.RequestBody);
             IRestResponse response2 = client2.Execute(request2);
             Console.WriteLine(response2.Content);
-            createRepoEditor_Data();
+           
         }
 
         private void createRepoEditor_Data()
@@ -1497,10 +1681,7 @@ namespace Ajan
 
         private void build_service()
         {
-
-
             var TestProcess = new System.Diagnostics.Process();
-
             string target = @"..\Release";
             if (!Directory.Exists(target))
             {
@@ -1512,27 +1693,23 @@ namespace Ajan
             try
             {
 
-                TestProcess.StartInfo.FileName = getPath(paths.ServiceInstall);
-                TestProcess.StartInfo.WorkingDirectory = getPath(paths.ServiceInstallDir);
+                TestProcess.StartInfo.FileName = "cmd.exe";
+                TestProcess.StartInfo.Arguments = "/c mvn install";
+                TestProcess.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
                 TestProcess.StartInfo.RedirectStandardInput = true;
-
                 TestProcess.StartInfo.RedirectStandardOutput = true;
-
                 TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
                 TestProcess.StartInfo.CreateNoWindow = true;
                 TestProcess.StartInfo.UseShellExecute = false;
                 TestProcess.StartInfo.EnvironmentVariables["JAVA_HOME"] = readConfig(JAVA_PATH).Replace(@"\bin", "");
-
                 TestProcess.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
                 TestProcess.Start();
                 TestProcess.BeginOutputReadLine();
                 Console.WriteLine("AJAN Service Installation started");
-
                 currentTaskLabel.Content = "AJAN SERVICE Installation";
                 setupProgressBar.Value = 0;
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
-
                     Console.WriteLine(outLine.Data);
                     this.Dispatcher.Invoke(() =>
                     {
@@ -1544,18 +1721,21 @@ namespace Ajan
                             oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
                             if (outLine.Data.Contains("BUILD SUCCESS"))
                             {
-
                                 Console.WriteLine("Service installed successfully !"); oneLinerLogLabel.Content = "AJAN SERVICE installed successfully !";
                                 setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+                                
+                                
+                                
+                                
                                 build_editor();
-
 
                             }
                         }
                     });
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine("Exception thrown : ");
                 Console.WriteLine(e.Message);
 
@@ -1578,14 +1758,13 @@ namespace Ajan
             try
             {
                 var TestProcess = new System.Diagnostics.Process();
-
-                TestProcess.StartInfo.FileName = getPath(paths.EditorInstall);
-                TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorInstallDir);
-
-
-
-                TestProcess.StartInfo.RedirectStandardOutput = true;
+                TestProcess.StartInfo.FileName = "cmd.exe";
+                TestProcess.StartInfo.Arguments = "/c npm install --loglevel info";
+                TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
+                 TestProcess.StartInfo.RedirectStandardOutput = true;
+             //   TestProcess.StartInfo.RedirectStandardError = true;
                 TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
+                TestProcess.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
                 TestProcess.StartInfo.CreateNoWindow = true;
                 TestProcess.StartInfo.UseShellExecute = false;
                 TestProcess.StartInfo.EnvironmentVariables["JAVA_HOME"] = readConfig(JAVA_PATH).Replace(@"\bin", "");
@@ -1596,30 +1775,37 @@ namespace Ajan
                 Console.WriteLine("AJAN EDITOR Installation started");
 
                 currentTaskLabel.Content = "AJAN EDITOR Installation";
-                setupProgressBar.Value = 0;
+                setupProgressBar.Value = 3;
+                ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                oneLinerLogLabel.Content = "installing The Editor...";
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
-                    Console.WriteLine(outLine.Data);
+                    
                     this.Dispatcher.Invoke(() =>
                     {
-                        setupProgressBar.Value += 100 / 20; // Math.Round(100.0 / 66);
-                        ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
-
+                        Console.WriteLine(outLine.Data);
+                        Console.WriteLine("data arrived");
                         if (!String.IsNullOrEmpty(outLine.Data))
                         {
-                            oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
-                            if (outLine.Data.Contains("packages in") || installationEnded)
+                            if (!installationEnded)
+                            {
+                                
+                                Console.WriteLine(setupProgressBar.Value);
+                                setupProgressBar.Value = Math.Min(99, setupProgressBar.Value + 100 / 20);
+                                ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
+                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                            }
+
+                            if (outLine.Data.Contains("packages in")  )
                             {
                                 installationEnded = true;
-                                Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
-                                setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
+                                createRepoNode_Definitions();
+                                createRepoEditor_Data();
+                                modifyConfig(SETUP_DONE, "true");
                                 //loadingGif.Visibility = Visibility.Hidden;
                                 config_btn.Content = "       Reset       ";
-                                modifyConfig(SETUP_DONE, "true");
-                                createRepoNode_Definitions();
-
-
-
+                                Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
+                                setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
 
                             }
                         }
@@ -1627,29 +1813,16 @@ namespace Ajan
                 }
 
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine("Exception thrown : ");
                 Console.WriteLine(e.Message);
 
             }
 
-
-
         }
 
-        /*           bool configWinExists = false; 
-                   foreach (Window window in Application.Current.Windows)
-                   {
-                       Console.WriteLine(window.Name);
-                       if (window.Name.Equals("configWinfow")){
-                           configWinExists = true;
-                           break; 
-                       }
-                   }
-                   if (!configWinExists) { 
-                   config_Window win = new config_Window();
-                   win.Show();
-                   }*/
+ 
 
 
         private void closeProgram(object sender, RoutedEventArgs e)
@@ -1666,8 +1839,6 @@ namespace Ajan
         private void minimizeProgram(object sender, RoutedEventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
-
-
         }
 
         private void pathToJava(object sender, RoutedEventArgs e)
@@ -1684,6 +1855,7 @@ namespace Ajan
                     System.Windows.Forms.MessageBox.Show("You have selected this path for OpenJDK 1.8: \n " + path, "Message");
                     modifyConfig(JAVA_PATH, path);
                     checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
+                    checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
 
                 }
             }
@@ -1722,32 +1894,34 @@ namespace Ajan
                     System.Windows.Forms.MessageBox.Show("You have selected this path for NodeJS 8.6: \n " + path, "Message");
                     modifyConfig(NODEJS_PATH, path);
                     checkNode(new object(), new RoutedEventArgs(), readConfig(NODEJS_PATH));
-                    try
-                    {
-                        var name = "PATH";
-                        var scope = EnvironmentVariableTarget.User; // or User
-                        var oldValue = Environment.GetEnvironmentVariable(name, scope);
-                        var newValue = oldValue + @";" + path;
-                        //   Environment.SetEnvironmentVariable(name, newValue, scope);   // adding nodejs path to enviromental variables  
+                  
+                    /*   try
+                       {
+                           var name = "PATH";
+                           var scope = EnvironmentVariableTarget.User; // or User
+                           var oldValue = Environment.GetEnvironmentVariable(name, scope);
+                           var newValue = oldValue + @";" + path;
+                           //   Environment.SetEnvironmentVariable(name, newValue, scope);   // adding nodejs path to enviromental variables  
 
 
 
 
-                        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-                        psi.FileName = "Ajan.exe";
-                        psi.EnvironmentVariables["Path"] = newValue;
-                        psi.UseShellExecute = false;
-                        psi.CreateNoWindow = true;
-                        System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-                        Environment.Exit(-1);
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                           System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                           psi.FileName = "Ajan.exe";
+                           psi.EnvironmentVariables["Path"] = newValue;
+                           psi.UseShellExecute = false;
+                           psi.CreateNoWindow = true;
+                           System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                           Environment.Exit(-1);
+                       }
+                       catch (Exception ex) { Console.WriteLine(ex.Message); }*/
                 }
             }
         }
 
         private void pathToBower(object sender, RoutedEventArgs e)
         {
+ 
             using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
             {
                 // System.Windows.Forms.DialogResult result = fbd.ShowDialog();
@@ -1757,29 +1931,34 @@ namespace Ajan
                     //   string[] files = Directory.GetFiles(fbd.SelectedPath);
                     string path = fbd.SelectedPath;
 
-                    System.Windows.Forms.MessageBox.Show("You have selected this path for Bower: \n " + path, "Message");
-                    modifyConfig(BOWER_PATH, path);
-                    checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
-                    try
-                    {
-                        var name = "PATH";
-                        var scope = EnvironmentVariableTarget.User; // or User
-                        var oldValue = Environment.GetEnvironmentVariable(name, scope);
-                        var newValue = oldValue + @";" + path;
-                      //  Environment.SetEnvironmentVariable(name, newValue, scope);
+                    System.Windows.Forms.MessageBox.Show("You have selected this path for AJAN Service: \n " + path, "Message");
+                    modifyConfig(SERVICE_PATH, path);
+                    Console.WriteLine(readConfig(SERVICE_PATH));
+
+
+
+                    
+                   // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
+                    /*      try
+                          {
+                              var name = "PATH";
+                              var scope = EnvironmentVariableTarget.User; // or User
+                              var oldValue = Environment.GetEnvironmentVariable(name, scope);
+                              var newValue = oldValue + @";" + path;
+                              //  Environment.SetEnvironmentVariable(name, newValue, scope);
 
 
 
 
-                        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-                        psi.FileName = "Ajan.exe";
-                        psi.EnvironmentVariables["Path"] = newValue;
-                        psi.UseShellExecute = false;
-                        psi.CreateNoWindow = true;
-                        System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
-                        Environment.Exit(-1);
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                              System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                              psi.FileName = "Ajan.exe";
+                              psi.EnvironmentVariables["Path"] = newValue;
+                              psi.UseShellExecute = false;
+                              psi.CreateNoWindow = true;
+                              System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                              Environment.Exit(-1);
+                          }
+                          catch (Exception ex) { Console.WriteLine(ex.Message); }*/
                 }
             }
         }
@@ -1798,13 +1977,13 @@ namespace Ajan
                     System.Windows.Forms.MessageBox.Show("You have selected this path for Ember: \n " + path, "Message");
                     modifyConfig(EMBER_PATH, path);
                     checkEmber(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
-                    try
+          /*          try
                     {
                         var name = "PATH";
                         var scope = EnvironmentVariableTarget.User; // or User
                         var oldValue = Environment.GetEnvironmentVariable(name, scope);
                         var newValue = oldValue + @";" + path;
-                     //   Environment.SetEnvironmentVariable(name, newValue, scope);
+                        //   Environment.SetEnvironmentVariable(name, newValue, scope);
 
 
 
@@ -1817,14 +1996,52 @@ namespace Ajan
                         System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
                         Environment.Exit(-1);
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }*/
                 }
             }
         }
 
-        
+        private void pathToEmberAndBower(object sender, RoutedEventArgs e)
+        {
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                // System.Windows.Forms.DialogResult result = fbd.ShowDialog();
 
-          private void pathToGit(object sender, RoutedEventArgs e)
+                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    //   string[] files = Directory.GetFiles(fbd.SelectedPath);
+                    string path = fbd.SelectedPath;
+
+                    System.Windows.Forms.MessageBox.Show("You have selected this path for Ember And Bower: \n " + path, "Message");
+                    modifyConfig(EMBER_PATH, path);
+                    modifyConfig(BOWER_PATH, path);
+
+                    checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
+                    /*          try
+                              {
+                                  var name = "PATH";
+                                  var scope = EnvironmentVariableTarget.User; // or User
+                                  var oldValue = Environment.GetEnvironmentVariable(name, scope);
+                                  var newValue = oldValue + @";" + path;
+                                  //   Environment.SetEnvironmentVariable(name, newValue, scope);
+
+
+
+
+                                  System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+                                  psi.FileName = "Ajan.exe";
+                                  psi.EnvironmentVariables["Path"] = newValue;
+                                  psi.UseShellExecute = false;
+                                  psi.CreateNoWindow = true;
+                                  System.Diagnostics.Process pr = System.Diagnostics.Process.Start(psi);
+                                  Environment.Exit(-1);
+                              }
+                              catch (Exception ex) { Console.WriteLine(ex.Message); }*/
+                }
+            }
+        }
+
+        private void pathToGit(object sender, RoutedEventArgs e)
         {
             using (var fbd = new System.Windows.Forms.FolderBrowserDialog())
             {
@@ -1838,7 +2055,7 @@ namespace Ajan
                     System.Windows.Forms.MessageBox.Show("You have selected this path for Git: \n " + path, "Message");
                     modifyConfig(GIT_PATH, path);
                     checkGit(new object(), new RoutedEventArgs(), readConfig(GIT_PATH));
-        
+
                 }
             }
         }
@@ -1896,6 +2113,7 @@ namespace Ajan
 
             var fileContent = string.Empty;
             var filePath = string.Empty;
+            String setup_btn = readConfig(SETUP_DONE);
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -1935,10 +2153,11 @@ namespace Ajan
                     checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
                     checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
                     checkNode(new object(), new RoutedEventArgs(), readConfig(NODEJS_PATH));
-                    checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
-                    checkEmber(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
+                   // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
+                    checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
                     checkGit(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
-                    if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
+                    modifyConfig(SETUP_DONE, setup_btn);
+                   // if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
 
                 }
             }
@@ -1948,6 +2167,9 @@ namespace Ajan
 
         }
     }
+
+
+
 }
 
 
@@ -2017,4 +2239,3 @@ namespace Ajan
 
 
 
- 
