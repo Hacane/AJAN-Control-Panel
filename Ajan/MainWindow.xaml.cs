@@ -72,6 +72,7 @@ namespace Ajan
         {
 
             InitializeComponent();
+            processGrid.Visibility = Visibility.Hidden;
             TripleStore_loadingGif.Visibility = Visibility.Hidden;
             Editor_loadingGif.Visibility = Visibility.Hidden;
             ExecutionService_loadingGif.Visibility = Visibility.Hidden;
@@ -87,8 +88,11 @@ namespace Ajan
             checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
             checkMaven(new object(), new RoutedEventArgs(), readConfig(MAVEN_PATH));
             checkNode(new object(), new RoutedEventArgs(), readConfig(NODEJS_PATH));
-            checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
             checkGit(new object(), new RoutedEventArgs(), readConfig(GIT_PATH));
+            checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
+            checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
+
+           
             if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
 
 
@@ -225,7 +229,8 @@ namespace Ajan
                                 percent += 0.8;
                                 setupProgressBar.Value = Math.Round(percent); // Math.Round(100.0 / 66);
                                 ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
-                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)).Replace("\t", "") + "...  ";
+                           
                             }
 
                             if (outLine.Data.Contains("Starting ProtocolHandler"))
@@ -346,7 +351,7 @@ namespace Ajan
 
                         if (!String.IsNullOrEmpty(outLine.Data))
                         {
-                            if (!Editor.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  "; }
+                            if (!Editor.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)) + "...  "; }
 
 
                             if (outLine.Data.Contains("Build successful") || outLine.Data.Contains("Slowest Nodes"))
@@ -431,22 +436,7 @@ namespace Ajan
                 ExecutionService.ID = cmd.Id;
                 setupProgressBar.Value = 0;
                 Console.WriteLine("Execution service start started");
-
-
-
-
-                /*string standard_output;
-                while ((standard_output = cmd.StandardOutput.ReadLine()) != null)
-                {
-                Console.WriteLine(standard_output);
-                    if (  String.IsNullOrEmpty(standard_output)) { 
-                Console.WriteLine("reading ended");
-                       // break;
-                    }
-
-                }*/
-
-
+ 
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
                     //* Do your stuff with the output (write to console/log/StringBuilder)
@@ -467,8 +457,8 @@ namespace Ajan
                         {
                             if (outLine.Data.IndexOf(" :") != -1 && !ExecutionService.Loaded)
                             {
-                                oneLinerLogLabel.Content = outLine.Data.Substring(outLine.Data.IndexOf(" :") + 2).Substring(0, Math.Min(Math.Max(outLine.Data.Length - outLine.Data.IndexOf(" :") - 2, 0), 50)) + "...  ";
-
+                                oneLinerLogLabel.Content = outLine.Data.Substring(outLine.Data.IndexOf(" :") + 2).Substring(0, Math.Min(Math.Max(outLine.Data.Length - outLine.Data.IndexOf(" :") - 2, 0), 120)) + "...  ";
+                  
                             }
 
 
@@ -689,7 +679,7 @@ namespace Ajan
             try
             {
                 oneLinerLogLabel.Content = "real time application status...";
-                currentTaskLabel.Content = "Current Task";
+                currentTaskLabel.Content = "Current Process";
                 setupProgressBar.Value = 0;
                 ProgressBarPercent.Content = "0%";
                 Console.WriteLine("Reset Done");
@@ -874,6 +864,56 @@ namespace Ajan
                 path_nodejs_btn.Visibility = Visibility.Visible;
             }
         }
+
+
+
+
+
+
+
+
+
+
+        private void checkServiceAndEditor(object sender, RoutedEventArgs e, String servicePath, String editorPath)
+        {
+            bool serviceFound = false;
+            bool editorFound = false;
+            Console.WriteLine("service and editor paths");
+            Console.WriteLine(servicePath);
+            Console.WriteLine(editorPath);
+            bower_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
+            bower_version_label.Content = "AJAN Service and AJAN Editor folders couldn't be found!";
+
+
+            //  if (String.IsNullOrEmpty(servicePath)) { }
+            var pattern = "*" + "service" + "*";
+            if (0 < System.IO.Directory.GetDirectories(servicePath + @"\..", pattern).Length)
+            {
+                serviceFound = true; 
+                Console.WriteLine("serviceFound = true");
+                bower_version_label.Content = "AJAN Service was found but AJAN Editor couldn't be found!";
+
+            }
+
+            pattern = "*" + "editor" + "*";
+            if (0 < System.IO.Directory.GetDirectories(editorPath + @"\..", pattern).Length)
+            {
+                editorFound = true;
+                Console.WriteLine("editorFound = true");
+                bower_version_label.Content = "AJAN Editor was found but AJAN Service couldn't be found!";
+
+            }
+
+            if (serviceFound && editorFound) 
+            {
+                bower_version_label.Content = "AJAN Service and AJAN Editor folders were found"  ;
+                bower_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
+            }
+        
+
+
+        }
+
 
         private void installJava(object sender, RoutedEventArgs e)
         {
@@ -1231,6 +1271,26 @@ namespace Ajan
                     System.Windows.Forms.MessageBox.Show("You have selected this path for AJAN Editor: \n " + path, "Message");
                     modifyConfig(EDITOR_PATH, path);
                     Console.WriteLine(readConfig(EDITOR_PATH));
+
+
+                    var pattern = "*" + "service" + "*";
+                    if (0 < System.IO.Directory.GetDirectories(path + @"\..", pattern).Length)
+                    {
+                        if (System.Windows.Forms.MessageBox.Show("AJAN Service folder was found next to the AJAN Editor folder that you have just selected. \nWould you like to use this AJAN Service folder ?", "AJAN Service found ! ", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning)
+                            == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            Console.WriteLine("AJAN Service changed");
+
+                            Console.WriteLine(System.IO.Directory.GetDirectories(path + @"\..", pattern)[0]);
+                            String fullpath = System.IO.Path.GetFullPath(System.IO.Path.Combine(path, System.IO.Directory.GetDirectories(path + @"\..", pattern)[0]));
+                            Console.WriteLine(fullpath);
+                            modifyConfig(SERVICE_PATH, fullpath);
+                            Console.WriteLine(readConfig(SERVICE_PATH));
+                        }
+                       
+                    }
+
+                    checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
                     // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
                     /*      try
                           {
@@ -1319,6 +1379,7 @@ namespace Ajan
 
         private void configWindow(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                   build_service();
@@ -1329,6 +1390,7 @@ namespace Ajan
                 Console.WriteLine("Error !!!");
                 Console.WriteLine(exception.Message);
             }
+    
         }
 
 
@@ -1397,7 +1459,9 @@ namespace Ajan
             else if (path == paths.EditorDir)
             {
                 if (!String.IsNullOrEmpty(readConfig(EDITOR_PATH))) { return readConfig(EDITOR_PATH); }
-                var pattern = "*" + "editor" + "*";
+                try
+                {
+                    var pattern = "*" + "editor" + "*";
                 String ServicePath = System.IO.Directory.GetDirectories(@"..\..\..\..\", pattern)[0];
                 Console.WriteLine("search path is");
                 Console.WriteLine(ServicePath);
@@ -1409,6 +1473,12 @@ namespace Ajan
                 Console.WriteLine("combine 1+2");
                 Console.WriteLine(Path);
                 return Path;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return "";
+                }
             }
             else if (path == paths.ServiceDir)
             {
@@ -1692,7 +1762,7 @@ namespace Ajan
 
             try
             {
-
+   
                 TestProcess.StartInfo.FileName = "cmd.exe";
                 TestProcess.StartInfo.Arguments = "/c mvn install";
                 TestProcess.StartInfo.WorkingDirectory = getPath(paths.ServiceDir);
@@ -1718,7 +1788,8 @@ namespace Ajan
 
                         if (!String.IsNullOrEmpty(outLine.Data) && !outLine.Data.Contains("--------"))
                         {
-                            oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                            oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)) + "...  ";
+                        
                             if (outLine.Data.Contains("BUILD SUCCESS"))
                             {
                                 Console.WriteLine("Service installed successfully !"); oneLinerLogLabel.Content = "AJAN SERVICE installed successfully !";
@@ -1793,7 +1864,7 @@ namespace Ajan
                                 Console.WriteLine(setupProgressBar.Value);
                                 setupProgressBar.Value = Math.Min(99, setupProgressBar.Value + 100 / 20);
                                 ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
-                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 100)) + "...  ";
+                                oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)) + "...  ";
                             }
 
                             if (outLine.Data.Contains("packages in")  )
@@ -1936,9 +2007,28 @@ namespace Ajan
                     Console.WriteLine(readConfig(SERVICE_PATH));
 
 
+                    var pattern = "*" + "editor" + "*";
+                    if (0 < System.IO.Directory.GetDirectories(path + @"\..", pattern).Length)
+                    {
+                        if (System.Windows.Forms.MessageBox.Show("AJAN Editor folder was found next to the AJAN Service folder that you have just selected. \nWould you like to use this AJAN Editor folder ?", "AJAN Editor found ! ", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning)
+                              == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            Console.WriteLine("AJAN Editor changed");
+                            Console.WriteLine(System.IO.Directory.GetDirectories(path + @"\..", pattern)[0]);
+                            String installPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(path, System.IO.Directory.GetDirectories(path + @"\..", pattern)[0]));
+                            Console.WriteLine(installPath);
+                            modifyConfig(EDITOR_PATH, installPath);
+                            Console.WriteLine(readConfig(EDITOR_PATH));
+                        }
+                   
+                  
+                    }
 
-                    
-                   // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
+                    checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
+
+
+
+                    // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
                     /*      try
                           {
                               var name = "PATH";
@@ -2121,10 +2211,11 @@ namespace Ajan
                 openFileDialog.Filter = "JSON files (*.json)|*.json";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
-
+                 processGrid.Visibility = Visibility.Visible;          // using the lower opacity processing grid 
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    import_loadingGif.Visibility = Visibility.Visible;
+                    
+                   import_loadingGif.Visibility = Visibility.Visible;
                     //Get the path of specified file
                     filePath = openFileDialog.FileName;
 
@@ -2139,7 +2230,9 @@ namespace Ajan
                     catch
                     {
                         System.Windows.Forms.MessageBox.Show("imported file doesnt have JSON structure please import another file ", "JSON Parsing Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                        
                         importConfigurations(new object(), new RoutedEventArgs());
+                        processGrid.Visibility = Visibility.Hidden;
                         return;
                     }
 
@@ -2147,7 +2240,7 @@ namespace Ajan
                     // System.Windows.Forms.MessageBox.Show("Configurations file successfully saved in this path: \n " + saveFileDialog.FileName, "Message");
                     //System.Windows.Forms.MessageBox.Show("Configurations file successfully saved in this path: \n " + saveFileDialog.FileName, "Export finished", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
-                    System.Windows.Forms.MessageBox.Show("The configuration file imported successfully", "Successful Import", MessageBoxButtons.OK);
+                    
 
 
                     checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));
@@ -2156,13 +2249,17 @@ namespace Ajan
                    // checkBower(new object(), new RoutedEventArgs(), readConfig(BOWER_PATH));
                     checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
                     checkGit(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH));
+                    checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
                     modifyConfig(SETUP_DONE, setup_btn);
-                   // if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
+                    processGrid.Visibility = Visibility.Hidden;
+                    System.Windows.Forms.MessageBox.Show("The configuration file imported successfully", "Successful Import", MessageBoxButtons.OK);
+                    // if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
 
                 }
             }
-
+            processGrid.Visibility = Visibility.Hidden;
             import_loadingGif.Visibility = Visibility.Hidden;
+            
 
 
         }

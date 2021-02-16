@@ -355,3 +355,4 @@ C:\Users\hacan\source\repos\Testing\Ajan control panel feb 12\Ajan\obj\Debug\Aja
 C:\Users\hacan\source\repos\Testing\Ajan control panel feb 12\Ajan\obj\Debug\Ajan.csproj.CopyComplete
 C:\Users\hacan\source\repos\Testing\Ajan control panel feb 12\Ajan\obj\Debug\Ajan.exe
 C:\Users\hacan\source\repos\Testing\Ajan control panel feb 12\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Testing\Ajan control panel feb 12\Ajan\obj\Debug\Ajan_Content.g.cs
