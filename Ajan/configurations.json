@@ -5,7 +5,7 @@
   "bowerPath": "C:\\Users\\hacan\\AppData\\Roaming\\npm",
   "emberPath": "C:\\Users\\hacan\\AppData\\Roaming\\npm",
   "gitPath": "C:\\Program Files\\Git\\cmd",
-  "servicePath": "C:\\Users\\hacan\\Desktop\\Ajan Backup files\\Ajan_test1\\AJAN-service-master",
-  "editorPath": "C:\\Users\\hacan\\Desktop\\Ajan Backup files\\Ajan_test3\\AJAN-editor-master",
+  "servicePath": "..\\..\\..\\..\\AJAN-service",
+  "editorPath": "..\\..\\..\\..\\AJAN-editor",
   "setupDone": "true"
 }

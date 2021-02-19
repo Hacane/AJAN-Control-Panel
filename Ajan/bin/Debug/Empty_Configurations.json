@@ -5,5 +5,7 @@
   "bowerPath": "",
   "emberPath": "",
   "gitPath": "",
-  "setupDone": ""
+  "servicePath": "",
+  "editorPath": "",
+  "setupDone": "false",
 }
