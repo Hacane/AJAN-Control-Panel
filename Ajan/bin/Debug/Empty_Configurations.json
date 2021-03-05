@@ -5,7 +5,7 @@
   "bowerPath": "",
   "emberPath": "",
   "gitPath": "",
-  "servicePath": "",
-  "editorPath": "",
+  "servicePath": "..\\..\\..\\..\\AJAN-service",
+  "editorPath": "..\\..\\..\\..\\AJAN-editor",
   "setupDone": "false",
 }
