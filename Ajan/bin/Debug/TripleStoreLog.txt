@@ -1,0 +1,173 @@
+
+Mar 06, 2021 2:19:21 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-bio-8090"]
+Mar 06, 2021 2:19:21 PM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Tomcat
+Mar 06, 2021 2:19:21 PM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/7.0.37
+Mar 06, 2021 2:19:25 PM org.apache.catalina.startup.ContextConfig processAnnotationsJar
+SEVERE: Unable to process Jar entry [module-info.class] from Jar [jar:file:/C:/Users/hacan/Desktop/AJAN%20control%20panel%20dev/AJAN-service/.extract/webapps/rdf4j/WEB-INF/lib/jaxb-api-2.3.1.jar!/] for annotations
+org.apache.tomcat.util.bcel.classfile.ClassFormatException: Invalid byte tag in constant pool: 19
+	at org.apache.tomcat.util.bcel.classfile.Constant.readConstant(Constant.java:133)
+	at org.apache.tomcat.util.bcel.classfile.ConstantPool.<init>(ConstantPool.java:60)
+	at org.apache.tomcat.util.bcel.classfile.ClassParser.readConstantPool(ClassParser.java:209)
+	at org.apache.tomcat.util.bcel.classfile.ClassParser.parse(ClassParser.java:119)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsStream(ContextConfig.java:2105)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsJar(ContextConfig.java:1981)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsUrl(ContextConfig.java:1947)
+	at org.apache.catalina.startup.ContextConfig.processAnnotations(ContextConfig.java:1932)
+	at org.apache.catalina.startup.ContextConfig.webConfig(ContextConfig.java:1326)
+	at org.apache.catalina.startup.ContextConfig.configureStart(ContextConfig.java:878)
+	at org.apache.catalina.startup.ContextConfig.lifecycleEvent(ContextConfig.java:369)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5179)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1559)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1549)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/core_rt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/core is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jsp/jstl/core is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/fmt_rt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/fmt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jsp/jstl/fmt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jsp/jstl/functions is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://jakarta.apache.org/taglibs/standard/permittedTaglibs is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://jakarta.apache.org/taglibs/standard/scriptfree is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/sql_rt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/sql is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jsp/jstl/sql is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/xml_rt is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jstl/xml is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.startup.TaglibUriRule body
+INFO: TLD skipped. URI: http://java.sun.com/jsp/jstl/xml is already defined
+Mar 06, 2021 2:19:26 PM org.apache.catalina.core.ApplicationContext log
+INFO: No Spring WebApplicationInitializer types detected on classpath
+Mar 06, 2021 2:19:27 PM org.apache.catalina.util.SessionIdGenerator createSecureRandom
+INFO: Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [330] milliseconds.
+Mar 06, 2021 2:19:27 PM org.apache.catalina.core.ApplicationContext log
+INFO: org.tuckey.web.filters.urlrewrite.UrlRewriteFilter INFO: status display disabled
+Mar 06, 2021 2:19:27 PM org.apache.catalina.core.ApplicationContext log
+INFO: org.tuckey.web.filters.urlrewrite.UrlRewriteFilter INFO: loaded (conf ok)
+Mar 06, 2021 2:19:27 PM org.apache.catalina.core.ApplicationContext log
+INFO: Initializing Spring DispatcherServlet 'rdf4j-http-server'
+Mar 06, 2021 2:19:28 PM org.apache.catalina.startup.ContextConfig processAnnotationsJar
+SEVERE: Unable to process Jar entry [module-info.class] from Jar [jar:file:/C:/Users/hacan/Desktop/AJAN%20control%20panel%20dev/AJAN-service/.extract/webapps/workbench/WEB-INF/lib/jaxb-api-2.3.1.jar!/] for annotations
+org.apache.tomcat.util.bcel.classfile.ClassFormatException: Invalid byte tag in constant pool: 19
+	at org.apache.tomcat.util.bcel.classfile.Constant.readConstant(Constant.java:133)
+	at org.apache.tomcat.util.bcel.classfile.ConstantPool.<init>(ConstantPool.java:60)
+	at org.apache.tomcat.util.bcel.classfile.ClassParser.readConstantPool(ClassParser.java:209)
+	at org.apache.tomcat.util.bcel.classfile.ClassParser.parse(ClassParser.java:119)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsStream(ContextConfig.java:2105)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsJar(ContextConfig.java:1981)
+	at org.apache.catalina.startup.ContextConfig.processAnnotationsUrl(ContextConfig.java:1947)
+	at org.apache.catalina.startup.ContextConfig.processAnnotations(ContextConfig.java:1932)
+	at org.apache.catalina.startup.ContextConfig.webConfig(ContextConfig.java:1326)
+	at org.apache.catalina.startup.ContextConfig.configureStart(ContextConfig.java:878)
+	at org.apache.catalina.startup.ContextConfig.lifecycleEvent(ContextConfig.java:369)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5179)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1559)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1549)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+Mar 06, 2021 2:19:29 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-bio-8090"]
+Mar 06, 2021 2:19:57 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: NONE
+Mar 06, 2021 2:19:57 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:19:58 PM org.eclipse.rdf4j.sail.helpers.DirectoryLockManager removeInvalidLock
+WARNING: Removing invalid lock 20744@MSI
+Mar 06, 2021 2:19:58 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: NONE
+Mar 06, 2021 2:19:58 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:00 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: NONE
+Mar 06, 2021 2:20:00 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:00 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: NONE
+Mar 06, 2021 2:20:00 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:01 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:05 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:05 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:05 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:05 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:08 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:08 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:08 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: agents
+Mar 06, 2021 2:20:08 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:09 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:11 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:11 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:11 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:11 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:14 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:14 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
+Mar 06, 2021 2:20:14 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet service
+INFO: Servicing repository: node_definitions
+Mar 06, 2021 2:20:14 PM org.eclipse.rdf4j.workbench.proxy.WorkbenchServlet setCredentials
+INFO: RemoteRepositoryManager URL: http://localhost:8090/rdf4j
