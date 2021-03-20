@@ -570,3 +570,123 @@ C:\Users\hacan\source\repos\Ajan control panel march 7\Ajan\obj\Debug\Ajan.cspro
 C:\Users\hacan\source\repos\Ajan control panel march 7\Ajan\obj\Debug\Ajan.csproj.CopyComplete
 C:\Users\hacan\source\repos\Ajan control panel march 7\Ajan\obj\Debug\Ajan.exe
 C:\Users\hacan\source\repos\Ajan control panel march 7\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Ajan.exe.config
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Flurl.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Flurl.Http.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\System.ValueTuple.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\WPF.Bootstrap.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\WpfAnimatedGif.dll
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Flurl.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Flurl.xml
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Flurl.Http.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\System.ValueTuple.xml
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\WpfAnimatedGif.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\bin\Debug\WpfAnimatedGif.xml
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\MainWindow.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\App.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan_Content.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan_MarkupCompile.cache
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan_MarkupCompile.lref
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\MainWindow.baml
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.g.resources
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.Properties.Resources.resources
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.csproj.GenerateResource.cache
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.csproj.CoreCompileInputs.cache
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.csproj.CopyComplete
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 9\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Ajan.exe.config
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Flurl.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Flurl.Http.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\System.ValueTuple.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\WPF.Bootstrap.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\WpfAnimatedGif.dll
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Flurl.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Flurl.xml
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Flurl.Http.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\System.ValueTuple.xml
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\WpfAnimatedGif.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\bin\Debug\WpfAnimatedGif.xml
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\MainWindow.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\App.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan_Content.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan_MarkupCompile.cache
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan_MarkupCompile.lref
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\MainWindow.baml
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.g.resources
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.Properties.Resources.resources
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.csproj.GenerateResource.cache
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.csproj.CoreCompileInputs.cache
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.csproj.CopyComplete
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 11\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Ajan.exe.config
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Flurl.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Flurl.Http.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\System.ValueTuple.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\WPF.Bootstrap.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\WpfAnimatedGif.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Flurl.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Flurl.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Flurl.Http.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\System.ValueTuple.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\WpfAnimatedGif.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\bin\Debug\WpfAnimatedGif.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\MainWindow.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\App.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan_Content.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan_MarkupCompile.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan_MarkupCompile.lref
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\MainWindow.baml
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.g.resources
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.Properties.Resources.resources
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.csproj.GenerateResource.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.csproj.CoreCompileInputs.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.csproj.CopyComplete
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 12\Ajan\obj\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Ajan.exe.config
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Ajan.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Flurl.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Flurl.Http.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\System.ValueTuple.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\WPF.Bootstrap.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\WpfAnimatedGif.dll
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Flurl.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Flurl.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Flurl.Http.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\System.ValueTuple.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\WpfAnimatedGif.pdb
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\bin\Debug\WpfAnimatedGif.xml
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.csprojAssemblyReference.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\MainWindow.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\App.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan_Content.g.cs
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan_MarkupCompile.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan_MarkupCompile.lref
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\MainWindow.baml
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.g.resources
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.Properties.Resources.resources
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.csproj.GenerateResource.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.csproj.CoreCompileInputs.cache
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.csproj.CopyComplete
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.exe
+C:\Users\hacan\source\repos\Ajan control panel march 12 for friday\Ajan\obj\Debug\Ajan.pdb

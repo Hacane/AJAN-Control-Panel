@@ -37,7 +37,7 @@
             <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
 
-        <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,367,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
+        <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,368,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
             <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,197,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
