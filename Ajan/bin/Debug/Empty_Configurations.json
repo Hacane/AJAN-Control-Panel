@@ -2,10 +2,10 @@
   "javaPath": "",
   "mavenPath": "",
   "nodejsPath": "",
-  "bowerPath": "",
   "emberPath": "",
+  "bowerPath": "",
   "gitPath": "",
   "servicePath": "..\\..\\..\\..\\AJAN-service",
   "editorPath": "..\\..\\..\\..\\AJAN-editor",
-  "setupDone": "false",
+  "buildDone": "false",
 }

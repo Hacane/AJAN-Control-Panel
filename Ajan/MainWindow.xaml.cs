@@ -35,7 +35,7 @@ namespace Ajan
         public const String BOWER_PATH = "bowerPath";
         public const String EMBER_PATH = "emberPath";
         public const String GIT_PATH = "gitPath";
-        public const String SETUP_DONE = "setupDone";
+        public const String BUILD_DONE = "buildDone";
         public const String SERVICE_PATH = "servicePath";
         public const String EDITOR_PATH = "editorPath";
 
@@ -87,7 +87,7 @@ namespace Ajan
             checkGit(new object(), new RoutedEventArgs(), readConfig(GIT_PATH));
             checkEmberAndBower(new object(), new RoutedEventArgs(), readConfig(EMBER_PATH), readConfig(BOWER_PATH));
             checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
-            if (readConfig(SETUP_DONE) == "true") { config_btn.Content = "       Reset       "; }
+            if (readConfig(BUILD_DONE) == "true") { config_btn.Content = "       Rebuild       "; }
         }
 
         public void checkConfigurationsFile()
@@ -864,6 +864,7 @@ namespace Ajan
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 path_java_btn.Visibility = Visibility.Hidden;
                 install_java_btn.Visibility = Visibility.Hidden;
+                java_separator.Visibility = Visibility.Hidden;
 
 
                 System.Diagnostics.ProcessStartInfo psi2 = new System.Diagnostics.ProcessStartInfo();
@@ -894,6 +895,7 @@ namespace Ajan
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
+                java_separator.Visibility = Visibility.Visible;
             }
         }
 
@@ -956,6 +958,7 @@ namespace Ajan
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 path_java_btn.Visibility = Visibility.Hidden;
                 install_java_btn.Visibility = Visibility.Hidden;
+                java_separator.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -964,6 +967,7 @@ namespace Ajan
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
+                java_separator.Visibility = Visibility.Visible;
             }
         }
 
@@ -1020,6 +1024,7 @@ namespace Ajan
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 path_maven_btn.Visibility = Visibility.Hidden;
                 install_Maven_btn.Visibility = Visibility.Hidden;
+                maven_separator.Visibility = Visibility.Hidden;
 
 
                 System.Diagnostics.ProcessStartInfo psi2 = new System.Diagnostics.ProcessStartInfo();
@@ -1050,6 +1055,7 @@ namespace Ajan
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
+                maven_separator.Visibility = Visibility.Visible;
             }
         }
 
@@ -1110,6 +1116,7 @@ namespace Ajan
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 path_maven_btn.Visibility = Visibility.Hidden;
                 install_Maven_btn.Visibility = Visibility.Hidden;
+                maven_separator.Visibility = Visibility.Hidden;
             }
 
             catch (Exception ex)
@@ -1118,6 +1125,7 @@ namespace Ajan
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
+                maven_separator.Visibility = Visibility.Visible;
             }
         }
 
@@ -1166,6 +1174,7 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Nodejs_btn.Visibility = Visibility.Hidden;
                 path_nodejs_btn.Visibility = Visibility.Hidden;
+                node_separator.Visibility = Visibility.Hidden;
 
 
                 System.Diagnostics.ProcessStartInfo psi2 = new System.Diagnostics.ProcessStartInfo();
@@ -1194,6 +1203,8 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
+                node_separator.Visibility = Visibility.Visible;
+
             }
         }
 
@@ -1247,6 +1258,8 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Nodejs_btn.Visibility = Visibility.Hidden;
                 path_nodejs_btn.Visibility = Visibility.Hidden;
+                node_separator.Visibility = Visibility.Hidden;
+
 
             }
             catch (Exception ex)
@@ -1255,6 +1268,8 @@ namespace Ajan
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
+                node_separator.Visibility = Visibility.Visible;
+
             }
         }
          
@@ -1298,6 +1313,7 @@ namespace Ajan
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Git_btn.Visibility = Visibility.Hidden;
                 path_Git_btn.Visibility = Visibility.Hidden;
+                git_separator.Visibility = Visibility.Hidden;
 
 
                 System.Diagnostics.ProcessStartInfo psi2 = new System.Diagnostics.ProcessStartInfo();
@@ -1329,6 +1345,8 @@ namespace Ajan
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
+                git_separator.Visibility = Visibility.Visible;
+
             }
         }
 
@@ -1381,6 +1399,8 @@ namespace Ajan
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Git_btn.Visibility = Visibility.Hidden;
                 path_Git_btn.Visibility = Visibility.Hidden;
+                git_separator.Visibility = Visibility.Hidden;
+
             }
             catch (Exception ex)
             {
@@ -1389,6 +1409,8 @@ namespace Ajan
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
+                git_separator.Visibility = Visibility.Visible;
+
             }
         }
 
@@ -1454,6 +1476,7 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Ember_btn.Visibility = Visibility.Visible;
                 path_ember_btn.Visibility = Visibility.Visible;
+                EmberBower_separator.Visibility = Visibility.Visible;
             }
 
 
@@ -1511,6 +1534,8 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Ember_btn.Visibility = Visibility.Visible;
                 path_ember_btn.Visibility = Visibility.Visible;
+                EmberBower_separator.Visibility = Visibility.Visible;
+
             }
 
 
@@ -1617,6 +1642,8 @@ namespace Ajan
                         ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                         install_Ember_btn.Visibility = Visibility.Visible;
                         path_ember_btn.Visibility = Visibility.Visible;
+                        EmberBower_separator.Visibility = Visibility.Visible;
+
                     }
                 }
 
@@ -1665,6 +1692,8 @@ namespace Ajan
                         ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                         install_Ember_btn.Visibility = Visibility.Visible;
                         path_ember_btn.Visibility = Visibility.Visible;
+                        EmberBower_separator.Visibility = Visibility.Visible;
+
                     }
 
                 }
@@ -1716,6 +1745,8 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Ember_btn.Visibility = Visibility.Hidden;
                 path_ember_btn.Visibility = Visibility.Hidden;
+                EmberBower_separator.Visibility = Visibility.Hidden;
+
 
             }
 
@@ -1725,6 +1756,8 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Ember_btn.Visibility = Visibility.Visible;
                 path_ember_btn.Visibility = Visibility.Visible;
+                EmberBower_separator.Visibility = Visibility.Visible;
+
             }
             if (!emberFound ^ !bowerFound)
             {
@@ -1764,6 +1797,10 @@ namespace Ajan
             {
                 ajan_folders_label.Content = "AJAN Service and AJAN Editor folders were found";
                 ajan_folders_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
+
+                if (Directory.Exists(readConfig(SERVICE_PATH) + @"\behaviour\target") && Directory.Exists(readConfig(EDITOR_PATH) + @"\tmp"))
+                { config_btn.Content = "       Rebuild       "; }
+                else { config_btn.Content = "       Build         "; }
             }
 
 
@@ -1869,6 +1906,8 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
                 install_Ember_btn.Visibility = Visibility.Hidden;
                 path_ember_btn.Visibility = Visibility.Hidden;
+                EmberBower_separator.Visibility = Visibility.Hidden;
+
             }
             catch (Exception ex)
             {
@@ -1877,6 +1916,8 @@ namespace Ajan
                 ember_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Ember_btn.Visibility = Visibility.Visible;
                 path_ember_btn.Visibility = Visibility.Visible;
+                EmberBower_separator.Visibility = Visibility.Visible;
+
             }
         }
 
@@ -2632,7 +2673,7 @@ namespace Ajan
                         Console.WriteLine(TestProcess.HasExited);
                         createRepoNode_Definitions();
                         createRepoEditor_Data();
-                        modifyConfig(SETUP_DONE, "true");
+                        modifyConfig(BUILD_DONE, "true");
                         //loadingGif.Visibility = Visibility.Hidden;
                         config_btn.Content = "       Reset       ";
                         Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
@@ -2831,8 +2872,7 @@ namespace Ajan
                         }
 
                         checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
-
-                    }
+                        }
                     else
                     {
                         System.Windows.Forms.MessageBox.Show("AJAN Service couldn't be found in the selected folder. \nPlease try again. ", "AJAN Service not found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
@@ -2885,6 +2925,7 @@ namespace Ajan
                         }
 
                         checkServiceAndEditor(new object(), new RoutedEventArgs(), getPath(paths.ServiceDir), getPath(paths.EditorDir));
+            
                     }
                     else
                     {
@@ -3185,7 +3226,7 @@ namespace Ajan
 
             var fileContent = string.Empty;
             var filePath = string.Empty;
-            String setup_btn = readConfig(SETUP_DONE);
+            String setup_btn = readConfig(BUILD_DONE);
             String editorPath = readConfig(EDITOR_PATH);
             String servicePath = readConfig(SERVICE_PATH);
 
@@ -3222,7 +3263,7 @@ namespace Ajan
                     File.WriteAllText(configFilePath, fileContent);
                     // System.Windows.Forms.MessageBox.Show("Configurations file successfully saved in this path: \n " + saveFileDialog.FileName, "Message");
                     //System.Windows.Forms.MessageBox.Show("Configurations file successfully saved in this path: \n " + saveFileDialog.FileName, "Export finished", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                    modifyConfig(SETUP_DONE, setup_btn);
+                    modifyConfig(BUILD_DONE, setup_btn);
                     modifyConfig(EDITOR_PATH, editorPath);
                     modifyConfig(SERVICE_PATH, servicePath);
                     checkJava(new object(), new RoutedEventArgs(), readConfig(JAVA_PATH));

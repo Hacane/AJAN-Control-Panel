@@ -31,24 +31,24 @@
             </TransformGroup>
         </Grid.LayoutTransform>
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,254,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
-            <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
+            <Rectangle x:Name="git_separator" HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,311,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
-            <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
+            <Rectangle x:Name="EmberBower_separator" HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,368,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
             <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,197,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
-            <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
+            <Rectangle x:Name="node_separator" HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,140,0,0" VerticalAlignment="Top" Width="962" Background="#EEEEEEEE" CornerRadius="10">
-            <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
+            <Rectangle x:Name="maven_separator" HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" HorizontalAlignment="Left" Height="55" Margin="16,83,0,0" VerticalAlignment="Top" Width="962" Background="#FFEEEEEE" CornerRadius="10">
-            <Rectangle HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
+            <Rectangle x:Name="java_separator" HorizontalAlignment="Left" Margin="776,0,0,4" Stroke="#FF6A6A6A" Width="1" Fill="#FF515151" RadiusY="0.156" RadiusX="0.156" RenderTransformOrigin="0.5,0.5" Height="45" VerticalAlignment="Bottom"/>
         </Border>
         <Button x:Name="StartAjan_btn" Content="Start All Services" Click="startAjan" HorizontalAlignment="Left" Width="186" FontSize="15" Background="#FF28A745" Foreground="#FFF8FAFF" FontFamily="Lato Regular" BorderBrush="#FF28A745" Margin="13,33.333,0,0" OpacityMask="Black" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Height="33" VerticalAlignment="Top"/>
         <Button x:Name="StartTriplestore_btn" Content="Start Triple Store" Click="startTripleStore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="186" Height="33" FontSize="15" Background="#FF28A745" Foreground="#FFF8FAFF" Margin="13,71.333,0,0" Grid.ColumnSpan="2" BorderBrush="#FF28A745" OpacityMask="Black" Grid.Row="1" FontFamily="Lato Regular"/>
@@ -68,7 +68,7 @@
         <Button x:Name="path_editor_btn" Content="path to Editor" Click="pathToEditor" HorizontalAlignment="Right" Margin="0,377,27.333,0" VerticalAlignment="Top" Width="160" Height="35" FontWeight="Bold" FontSize="15" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="#FFA3A4DC" FontFamily="Lato Regular"/>
         <Label x:Name="ember_version_label" Content="" HorizontalAlignment="Left" Margin="69.327,322.667,0,0" VerticalAlignment="Top" Width="533" Height="37" Foreground="#FF191919" FontSize="15" TextOptions.TextHintingMode="Animated" UseLayoutRounding="False" FontFamily="Lato Regular" Grid.ColumnSpan="4"/>
         <Button x:Name="install_Ember_btn" Content="Install Both" Click="installEmberAndBower" HorizontalAlignment="Right" Margin="0,319,26.333,0" VerticalAlignment="Top" Width="160" Height="35" FontWeight="Bold" FontSize="15" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="4" Grid.ColumnSpan="2" BorderBrush="#FFA3A4DC" FontFamily="Lato Regular"/>
-        <Button x:Name="config_btn" Content="       Setup       " Click="configWindow" Margin="13,435,0,0" VerticalAlignment="Top" Height="33" FontWeight="Bold" FontSize="15" Background="#FFFFAE00" Foreground="White" HorizontalAlignment="Left" Width="186" BorderBrush="#FFFFAE00" OpacityMask="Black" Grid.ColumnSpan="2" Grid.RowSpan="2" FontFamily="Lato Regular"/>
+        <Button x:Name="config_btn" Content="       Build       " Click="configWindow" Margin="13,435,0,0" VerticalAlignment="Top" Height="33" FontWeight="Bold" FontSize="15" Background="#FFFFAE00" Foreground="White" HorizontalAlignment="Left" Width="186" BorderBrush="#FFFFAE00" OpacityMask="Black" Grid.ColumnSpan="2" Grid.RowSpan="2" FontFamily="Lato Regular"/>
         <Image x:Name="java_install_sign" HorizontalAlignment="Left" Height="59" Margin="28,93,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.581,0.486"/>
         <Image x:Name="ember_install_sign" HorizontalAlignment="Left" Height="36" Margin="28,324,0,0" VerticalAlignment="Top" Width="30" Source="greenTick.png" RenderTransformOrigin="0.114,0.686"/>
         <Button x:Name="path_java_btn" Content="path to OpenJDK 1.8" Click="pathToJava" Margin="322.333,93,0,0" VerticalAlignment="Top" Height="35" FontWeight="Bold" FontSize="15" Background="#FFF8FAFF" Foreground="#FF00081D" Grid.Column="3" BorderBrush="#FFA3A4DC" Width="160" HorizontalAlignment="Left" FontFamily="Lato Regular"  />
