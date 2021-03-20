@@ -59,6 +59,8 @@ namespace Ajan
         Pr TripleStore = new Pr();
         Pr ExecutionService = new Pr();
         Pr Editor = new Pr();
+        Pr ReportService = new Pr();
+        Pr TestActionService = new Pr();
         DirectoryInfo AJANCacheFolder = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/AJAN");
         string configFilePath = "";
 
@@ -330,6 +332,9 @@ namespace Ajan
                 StartAjan_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
                 StartAjan_btn.Content = "  Stop All Services";
                 Editor.ID = TestProcess.Id;
+                Console.WriteLine("Editor started ID");
+                Console.WriteLine(Editor.ID);
+
                 TestProcess.BeginOutputReadLine();
                 TestProcess.EnableRaisingEvents = true;
                 TestProcess.Exited += new EventHandler(p_Exited);
@@ -371,7 +376,7 @@ namespace Ajan
                             if (!Editor.Loaded) { oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)) + "...  "; }
 
 
-                            if (outLine.Data.Contains("Build successful") || outLine.Data.Contains("Slowest Nodes"))
+                            if ((outLine.Data.Contains("Build successful") || outLine.Data.Contains("Slowest Node")) && !Editor.Loaded)
                             {
                                 Editor.Loaded = true;
                                 percent = 100;
@@ -395,6 +400,9 @@ namespace Ajan
 
                                 StartEditor_btn.Background = new SolidColorBrush(Color.FromRgb(219, 40, 40));
                                 StartEditor_btn.Content = "Stop Editor";
+
+                                startReportService(new object(), new RoutedEventArgs());
+                                startTestActionService(new object(), new RoutedEventArgs());
 
                             }
 
@@ -546,6 +554,43 @@ namespace Ajan
 
         }
 
+       
+
+        private void startReportService(object sender, RoutedEventArgs e)
+        {
+                System.Diagnostics.Process cmd = new System.Diagnostics.Process();
+                cmd.StartInfo.FileName = "cmd.exe";
+                cmd.StartInfo.Arguments = "/c node reportService.js";
+                cmd.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
+                cmd.StartInfo.RedirectStandardError = true;
+                cmd.StartInfo.RedirectStandardOutput = true;
+                cmd.StartInfo.CreateNoWindow = true;
+                cmd.StartInfo.UseShellExecute = false;
+                cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
+                cmd.Start();
+                ReportService.ID = cmd.Id;
+                Console.WriteLine("Report service start started with ID");
+                Console.WriteLine(ReportService.ID);
+        }
+
+        private void startTestActionService(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process cmd = new System.Diagnostics.Process();
+            cmd.StartInfo.FileName = "cmd.exe";
+            cmd.StartInfo.Arguments = "/c node testActionService.js";
+            cmd.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
+            cmd.StartInfo.RedirectStandardError = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.CreateNoWindow = true;
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.StartInfo.EnvironmentVariables["PATH"] = readConfig(NODEJS_PATH) + ";" + readConfig(EMBER_PATH) + ";" + readConfig(BOWER_PATH) + ";" + readConfig(JAVA_PATH) + ";" + readConfig(MAVEN_PATH);
+            cmd.Start();
+            TestActionService.ID = cmd.Id;
+         
+            Console.WriteLine("Test Action service start started with ID");
+            Console.WriteLine(TestActionService.ID);
+        }
+
 
         private void startAjan(object sender, RoutedEventArgs e)
         {
@@ -659,6 +704,8 @@ namespace Ajan
 
             Editor_loadingGif.Visibility = Visibility.Hidden;
             editor_txtbox.Text = " ";
+            closeReportService();                   
+            closeTestActionService();
             KillProcessAndChildren(Editor.ID);
             Editor.Running = false;
             Editor.Loaded = false;
@@ -672,16 +719,32 @@ namespace Ajan
 
         }
 
+        private void closeReportService()
+        {
+            Console.WriteLine("Report service close");
+            KillProcessAndChildren(ReportService.ID);
+        }
+        private void closeTestActionService()
+        {
+            Console.WriteLine("Test Action service close");
+            KillProcessAndChildren(TestActionService.ID);
+        }
 
+    
         private static void KillProcessAndChildren(int pid)
         {
             // Cannot close 'system idle process'.
             if (pid == 0)
             {
+                Console.WriteLine("killing process not possible pid == 0 - ");
+
                 return;
             }
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
             ManagementObjectCollection moc = searcher.Get();
+            if(moc.Count == 0)
+                Console.WriteLine("process not found to kill ");
+
             foreach (ManagementObject mo in moc)
             {
                 KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
@@ -785,7 +848,7 @@ namespace Ajan
 
 
 
-                if (strOutput.Contains("not") || strOutput.Contains("nicht") || strOutput.Contains("\"java\"") || strOutput.Contains("\'java\'"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"java\"") || strOutput.Contains("\'java\'"))
                 {
                     throw new Exception("JAVA couldn't be found!  ");
                 }
@@ -932,7 +995,7 @@ namespace Ajan
                 catch
                 {
                     strOutput = pr.StandardError.ReadLine();
- 
+                    throw new Exception(strOutput);
                 }
 
                 if (strOutput.Contains("JAVA_HOME"))
@@ -983,7 +1046,7 @@ namespace Ajan
 
             catch (Exception ex)
             {
-                maven_version_label.Content = "Maven Problem: " + ex.Message;
+                maven_version_label.Content = "Maven: " + ex.Message;
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
@@ -1022,6 +1085,7 @@ namespace Ajan
                 catch
                 {
                     strOutput = pr.StandardError.ReadLine();
+                    throw new Exception(strOutput);
 
                 }
 
@@ -1030,7 +1094,7 @@ namespace Ajan
                     throw new Exception("JAVA must be provided first!");
                 }
 
-                if (strOutput.Contains("not"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"mvn\"") || strOutput.Contains("\'mvn\'"))
                 {
                     throw new Exception("Maven couldn't be found!");
                 }
@@ -1050,7 +1114,7 @@ namespace Ajan
 
             catch (Exception ex)
             {
-                maven_version_label.Content = "Maven Problem: "+ex.Message;
+                maven_version_label.Content = "Maven: "+ex.Message;
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
@@ -1086,9 +1150,11 @@ namespace Ajan
                 catch (Exception)
                 {
                     strOutput = pr.StandardError.ReadLine();
+                    throw new Exception(strOutput);
+
                 }
-                
-                if (strOutput.Contains("not"))
+
+                if (strOutput.Contains("not") || strOutput.Contains("\"node\"") || strOutput.Contains("\'node\'"))
                 {
                     throw new Exception("NodeJS couldn't be found!");
                 }
@@ -1124,7 +1190,7 @@ namespace Ajan
             }
             catch (Exception ex)
             {
-                node_version_label.Content = "NodeJS Problem: " + ex.Message;
+                node_version_label.Content = "NodeJS: " + ex.Message;
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
@@ -1165,10 +1231,11 @@ namespace Ajan
                     Console.WriteLine("NODE output from ERRORRRRrrrrrrrrrrrrr "  );
 
                     strOutput = pr.StandardError.ReadLine();
-                 //   throw new Exception("NodeJS not found!");
+                    throw new Exception(strOutput);
+
                 }
 
-                if (strOutput.Contains("not"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"node\"") || strOutput.Contains("\'node\'"))
                 {
                     throw new Exception("NodeJS couldn't be found!");
                 }
@@ -1184,7 +1251,7 @@ namespace Ajan
             }
             catch (Exception ex)
             {
-                node_version_label.Content = "NodeJS Problem: " + ex.Message;
+                node_version_label.Content = "NodeJS: " + ex.Message;
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
@@ -1214,9 +1281,11 @@ namespace Ajan
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); 
                     Console.WriteLine("git output from ERRORRRRrrrrrrrrrrrrr "  );
+                    throw new Exception(strOutput);
+
 
                 }
-                if (strOutput.Contains("not recognized"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"git\"") || strOutput.Contains("\'git\'"))
                 {
                     throw new Exception("Git couldn't be found!");
                 }
@@ -1255,8 +1324,8 @@ namespace Ajan
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception is " + ex.Message);
-                git_version_label.Content = "Git Problem: " + ex.Message;
+               // Console.WriteLine("Exception is " + ex.Message);
+                git_version_label.Content = "Git: " + ex.Message;
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
@@ -1296,8 +1365,10 @@ namespace Ajan
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); 
                     Console.WriteLine("git output from ERRORRRRrrrrrrrrrrrrr "  );
+                    throw new Exception(strOutput);
+
                 }
-                if (strOutput.Contains("not recognized"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"git\"") || strOutput.Contains("\'git\'"))
                 {
                     throw new Exception("Git couldn't be found!");
                 }
@@ -1313,8 +1384,8 @@ namespace Ajan
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception is " + ex.Message);
-                git_version_label.Content = "Git Problem: " + ex.Message;
+                //Console.WriteLine("Exception is " + ex.Message);
+                git_version_label.Content = "Git: " + ex.Message;
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
@@ -1351,9 +1422,11 @@ namespace Ajan
                 }
                 catch (Exception) { strOutput = pr.StandardError.ReadLine(); 
                     Console.WriteLine("ember output from ERRORRRRrrrrrrrrrrrrr "  );
+                   
+
 
                 }
-                if (strOutput.Contains("not recognized"))
+                if (strOutput.Contains("not") || strOutput.Contains("\"ember\"") || strOutput.Contains("\'ember\'"))
                 {
                     throw new Exception("Ember couldn't be found!");
                 }
@@ -1516,7 +1589,7 @@ namespace Ajan
                             if (String.IsNullOrEmpty(strOutput)) { throw new Exception(); }
                         }
                         catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
-                        if (strOutput.Contains("not recognized"))
+                        if (strOutput.Contains("not") || strOutput.Contains("\"ember\"") || strOutput.Contains("\'ember\'"))
                         {
                             throw new Exception("Ember couldn't be found!");
                         }
@@ -1574,7 +1647,7 @@ namespace Ajan
                         }
                         catch (Exception) { strOutput = pr.StandardError.ReadLine(); }
 
-                        if (strOutput.Contains("not"))
+                        if (strOutput.Contains("not") || strOutput.Contains("\"bower\"") || strOutput.Contains("\'bower\'"))
                         {
                             throw new Exception("Bower couldn't be found!");
                         }
