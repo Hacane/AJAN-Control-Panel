@@ -172,7 +172,7 @@ namespace Ajan
 
         private void startTripleStore(object sender, RoutedEventArgs e)
         {
-            if (!TripleStore.Running)
+            if (!TripleStore.Running && config_btn.Content.ToString().Contains("Rebuild"))
             {
                 String log = "";
                 DirectoryInfo logsPath = Directory.CreateDirectory(AJANCacheFolder.FullName + @"/AJAN-Logs");
@@ -287,6 +287,11 @@ namespace Ajan
                 }
 
             }
+            else if (!config_btn.Content.ToString().Contains("Rebuild"))
+            {
+                System.Windows.Forms.MessageBox.Show("The Triple Store can't run before successfully building AJAN", "AJAN not built! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+            }
             else
             {
                 Console.WriteLine("process already running");
@@ -304,7 +309,7 @@ namespace Ajan
 
         private void startEditor(object sender, RoutedEventArgs e)
         {
-            if (!Editor.Running)
+            if (!Editor.Running && config_btn.Content.ToString().Contains("Rebuild"))
             {
                 String log = "";
                 DirectoryInfo logsPath = Directory.CreateDirectory(AJANCacheFolder.FullName + @"/AJAN-Logs");
@@ -321,7 +326,8 @@ namespace Ajan
                 TestProcess.StartInfo.FileName = "cmd.exe";
                 TestProcess.StartInfo.Arguments = "/c ember clean-tmp & ember serve";
                 TestProcess.StartInfo.WorkingDirectory = getPath(paths.EditorDir);
-                TestProcess.StartInfo.RedirectStandardInput = true;
+                //  TestProcess.StartInfo.RedirectStandardInput = true;
+                TestProcess.StartInfo.RedirectStandardError = true;
                 TestProcess.StartInfo.RedirectStandardOutput = true;
                 TestProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
                 TestProcess.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
@@ -417,6 +423,11 @@ namespace Ajan
 
                 }
             }
+            else if (!config_btn.Content.ToString().Contains("Rebuild"))
+            {
+                System.Windows.Forms.MessageBox.Show("The Editor can't run before successfully building AJAN", "AJAN not built! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+            }
             else
             {
                 Console.WriteLine("process already running");
@@ -444,7 +455,7 @@ namespace Ajan
 
         private void startExectionService(object sender, RoutedEventArgs e)
         {
-            if (!ExecutionService.Running)
+            if (!ExecutionService.Running && config_btn.Content.ToString().Contains("Rebuild"))
             {
                 String log = "";
                 DirectoryInfo logsPath = Directory.CreateDirectory(AJANCacheFolder.FullName + @"/AJAN-Logs");
@@ -484,7 +495,7 @@ namespace Ajan
 
                 ExecutionService.ID = cmd.Id;
                 setupProgressBar.Value = 0;
-                Console.WriteLine("Execution service start started");
+                Console.WriteLine("Execution Service start started");
 
                 void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
                 {
@@ -537,6 +548,11 @@ namespace Ajan
 
 
                 }
+
+            }
+            else if(!config_btn.Content.ToString().Contains("Rebuild"))
+            {
+                System.Windows.Forms.MessageBox.Show("The Execution Service can't run before successfully building AJAN", "AJAN not built! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 
             }
             else
@@ -594,7 +610,12 @@ namespace Ajan
 
         private void startAjan(object sender, RoutedEventArgs e)
         {
-            if (!TripleStore.Running && !Editor.Running && !ExecutionService.Running)
+            if (!config_btn.Content.ToString().Contains("Rebuild"))
+            {
+                System.Windows.Forms.MessageBox.Show("The Services can't run before successfully building AJAN", "AJAN not built! ", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+            }
+            else if (!TripleStore.Running && !Editor.Running && !ExecutionService.Running)
             {
                 ExitAllServices(new object(), new RoutedEventArgs());
                 startEditor(new object(), new RoutedEventArgs());
@@ -742,13 +763,19 @@ namespace Ajan
             }
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
             ManagementObjectCollection moc = searcher.Get();
-            if(moc.Count == 0)
-                Console.WriteLine("process not found to kill ");
-
-            foreach (ManagementObject mo in moc)
+            if (moc.Count == 0)
             {
-                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+                Console.WriteLine("child process not found to kill ");
+
             }
+            else
+            {
+                foreach (ManagementObject mo in moc)
+                {
+                    KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+                }
+            }
+
             try
             {
                 Process proc = Process.GetProcessById(pid);
@@ -756,9 +783,12 @@ namespace Ajan
                 Console.WriteLine(proc.ProcessName);
                 proc.Kill();
             }
-            catch (ArgumentException)
+            catch (Exception e)
             {
                 // Process already exited.
+                Console.WriteLine("ERROR PROCESS COULDNT BE KILLED !!!!!!!!! ");
+                Console.WriteLine(e.Message);
+
             }
         }
 
@@ -891,7 +921,7 @@ namespace Ajan
             catch (Exception ex)
             {
                 Console.WriteLine("Exception log: " + ex.Message);
-                java_version_label.Content = "JAVA problem: " + ex.Message;
+                java_version_label.Content =   ex.Message;
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
@@ -963,7 +993,7 @@ namespace Ajan
             catch (Exception ex)
             {
                 Console.WriteLine("Exception is " + ex.Message);
-                java_version_label.Content = "JAVA problem: " + ex.Message;
+                java_version_label.Content =   ex.Message;
                 java_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 path_java_btn.Visibility = Visibility.Visible;
                 install_java_btn.Visibility = Visibility.Visible;
@@ -1002,16 +1032,7 @@ namespace Ajan
                     throw new Exception(strOutput);
                 }
 
-                if (strOutput.Contains("JAVA_HOME"))
-                {
-                    throw new Exception("JAVA must be provided first!");
-                }
-
-                if (strOutput.Contains("not") || strOutput.Contains("\"mvn\"") || strOutput.Contains("\'mvn\'"))
-
-                {
-                    throw new Exception("Maven couldn't be found!");
-                }
+                
 
 
 
@@ -1051,7 +1072,19 @@ namespace Ajan
 
             catch (Exception ex)
             {
+
+
                 maven_version_label.Content = "Maven: " + ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"mvn\"") || ex.Message.Contains("\'mvn\'"))
+
+                {
+                    maven_version_label.Content = "Maven couldn't be found!";
+                }
+                if (ex.Message.Contains("JAVA_HOME"))
+                {
+                    maven_version_label.Content = "Maven: JAVA must be provided first!"  ;
+                }
+ 
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
@@ -1095,15 +1128,7 @@ namespace Ajan
 
                 }
 
-                if (strOutput.Contains("JAVA_HOME"))
-                {
-                    throw new Exception("JAVA must be provided first!");
-                }
-
-                if (strOutput.Contains("not") || strOutput.Contains("\"mvn\"") || strOutput.Contains("\'mvn\'"))
-                {
-                    throw new Exception("Maven couldn't be found!");
-                }
+ 
 
 
 
@@ -1122,6 +1147,16 @@ namespace Ajan
             catch (Exception ex)
             {
                 maven_version_label.Content = "Maven: "+ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"mvn\"") || ex.Message.Contains("\'mvn\'"))
+                {
+                    maven_version_label.Content = "Maven couldn't be found!";
+                }
+                if (ex.Message.Contains("JAVA_HOME"))
+                {
+                    maven_version_label.Content = "Maven: JAVA must be provided first!";
+                }
+
+       
                 maven_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Maven_btn.Visibility = Visibility.Visible;
                 path_maven_btn.Visibility = Visibility.Visible;
@@ -1162,10 +1197,7 @@ namespace Ajan
 
                 }
 
-                if (strOutput.Contains("not") || strOutput.Contains("\"node\"") || strOutput.Contains("\'node\'"))
-                {
-                    throw new Exception("NodeJS couldn't be found!");
-                }
+ 
                 if (!strOutput.Contains("8.6"))
                 {
                     throw new Exception($"you have NodeJS v{strOutput.Replace("v", "")} ! you need v8.6");
@@ -1200,6 +1232,10 @@ namespace Ajan
             catch (Exception ex)
             {
                 node_version_label.Content = "NodeJS: " + ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"node\"") || ex.Message.Contains("\'node\'"))
+                {
+                    node_version_label.Content = "NodeJS couldn't be found!";
+                }
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
@@ -1246,10 +1282,7 @@ namespace Ajan
 
                 }
 
-                if (strOutput.Contains("not") || strOutput.Contains("\"node\"") || strOutput.Contains("\'node\'"))
-                {
-                    throw new Exception("NodeJS couldn't be found!");
-                }
+
                 if (!strOutput.Contains("8.6"))
                 {
                     throw new Exception($"you have {strOutput.Replace("v", "")} version! you need 8.6");
@@ -1265,6 +1298,10 @@ namespace Ajan
             catch (Exception ex)
             {
                 node_version_label.Content = "NodeJS: " + ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"node\"") || ex.Message.Contains("\'node\'"))
+                {
+                    node_version_label.Content = "NodeJS couldn't be found!"  ;
+                }
                 node_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Nodejs_btn.Visibility = Visibility.Visible;
                 path_nodejs_btn.Visibility = Visibility.Visible;
@@ -1300,10 +1337,7 @@ namespace Ajan
 
 
                 }
-                if (strOutput.Contains("not") || strOutput.Contains("\"git\"") || strOutput.Contains("\'git\'"))
-                {
-                    throw new Exception("Git couldn't be found!");
-                }
+
                 if (strOutput.Contains("git version"))
                 {
                     int position = strOutput.IndexOf("git version") + "git version".Length;
@@ -1342,6 +1376,10 @@ namespace Ajan
             {
                // Console.WriteLine("Exception is " + ex.Message);
                 git_version_label.Content = "Git: " + ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"git\"") || ex.Message.Contains("\'git\'"))
+                {
+                    git_version_label.Content = "Git couldn't be found!";
+                                     }
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
@@ -1386,10 +1424,7 @@ namespace Ajan
                     throw new Exception(strOutput);
 
                 }
-                if (strOutput.Contains("not") || strOutput.Contains("\"git\"") || strOutput.Contains("\'git\'"))
-                {
-                    throw new Exception("Git couldn't be found!");
-                }
+   
                 if (strOutput.Contains("git version"))
                 {
                     int position = strOutput.IndexOf("git version") + "git version".Length;
@@ -1406,6 +1441,10 @@ namespace Ajan
             {
                 //Console.WriteLine("Exception is " + ex.Message);
                 git_version_label.Content = "Git: " + ex.Message;
+                if (ex.Message.Contains("not") || ex.Message.Contains("\"git\"") || ex.Message.Contains("\'git\'"))
+                {
+                    git_version_label.Content = "Git couldn't be found!";
+                }
                 git_install_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\redCross.png")));
                 install_Git_btn.Visibility = Visibility.Visible;
                 path_Git_btn.Visibility = Visibility.Visible;
@@ -1797,14 +1836,19 @@ namespace Ajan
             {
                 ajan_folders_label.Content = "AJAN Service and AJAN Editor folders were found";
                 ajan_folders_sign.Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(@"..\..\greenTick.png")));
-
-                if (Directory.Exists(readConfig(SERVICE_PATH) + @"\behaviour\target") && Directory.Exists(readConfig(EDITOR_PATH) + @"\tmp"))
-                { config_btn.Content = "       Rebuild       "; }
-                else { config_btn.Content = "       Build         "; }
+                updateBuildButton();
+                
             }
 
 
 
+        }
+
+        private void updateBuildButton()
+        {
+            if (File.Exists(readConfig(SERVICE_PATH) + @"\executionservice\target\executionservice-0.1.jar") && File.Exists(readConfig(SERVICE_PATH) + @"\triplestore\target\triplestore-0.1-war-exec.jar") && Directory.Exists(readConfig(EDITOR_PATH) + @"\tmp"))
+            { config_btn.Content = "       Rebuild       "; }
+            else { config_btn.Content = "       Build         "; }
         }
 
         private bool checkService(String path)
@@ -1998,7 +2042,7 @@ namespace Ajan
         }
 
 
-
+      
 
         private void installEmber(object sender, RoutedEventArgs e)
         {
@@ -2013,10 +2057,17 @@ namespace Ajan
 
         private void installEmberAndBower(object sender, RoutedEventArgs e)
         {
-          
-       
+            install_Ember_btn.Visibility = Visibility.Hidden;
+            path_ember_btn.Visibility = Visibility.Hidden;
+            EmberBower_separator.Visibility = Visibility.Hidden;
+
             System.Diagnostics.Process cmd = new System.Diagnostics.Process();
             System.Diagnostics.Process cmd2 = new System.Diagnostics.Process();
+            foreach (var verb in cmd2.StartInfo.Verbs)
+            {
+                Console.WriteLine($"  verb =  {verb}");
+            }
+
 
             if (!install_Ember_btn.Content.ToString().Contains("Ember"))
             {
@@ -2046,6 +2097,22 @@ namespace Ajan
                         setupProgressBar.Value = 100;
                         ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
                         checkEmberAndBower(new object(), new RoutedEventArgs(), null, null);
+                        try
+                        {
+                            if (cmd2.Threads.Count > 0)
+                            {
+                                install_Ember_btn.Visibility = Visibility.Hidden;
+                                path_ember_btn.Visibility = Visibility.Hidden;
+                                EmberBower_separator.Visibility = Visibility.Hidden;
+                                Console.WriteLine("ember installation running so buttons hidden");
+
+                            }
+                        }
+                        catch(Exception ex) { 
+                        Console.WriteLine("looks like ember install doesnt exist {0}",ex.Message);
+
+                        }
+
 
                     });
 
@@ -2071,7 +2138,7 @@ namespace Ajan
                 }
             }
 
-            if (!install_Ember_btn.Content.ToString().Contains("Bower"))
+            if (!install_Ember_btn.Content.ToString().Contains("Bower"))   
             {
                 Console.WriteLine("Ember installation starting");
 
@@ -2099,6 +2166,22 @@ namespace Ajan
                         setupProgressBar.Value = 100;
                         ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
                         checkEmberAndBower(new object(), new RoutedEventArgs(), null, null);
+                        try
+                        {
+                            if (cmd.Threads.Count > 0)
+                            {
+                                install_Ember_btn.Visibility = Visibility.Hidden;
+                                path_ember_btn.Visibility = Visibility.Hidden;
+                                EmberBower_separator.Visibility = Visibility.Hidden;
+                                Console.WriteLine("bower installation running" );
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("looks like bower install doesnt exist {0}", ex.Message);
+
+                        }
                     });
                 }
 
@@ -2279,7 +2362,7 @@ namespace Ajan
                 {
 
                     String editorpath = getPath(paths.EditorDir);
-                    Console.WriteLine("search path is");
+                    Console.WriteLine("node definition search path is");
                     Console.WriteLine(editorpath);
                     return System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, editorpath + @"\Triplestore Repos\node_definitions.ttl"));
                 }
@@ -2287,7 +2370,7 @@ namespace Ajan
                 {
 
                     String editorpath = getPath(paths.EditorDir);
-                    Console.WriteLine("search path is");
+                    Console.WriteLine("editor data search path is");
                     Console.WriteLine(editorpath);
                     return System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, editorpath + @"\Triplestore Repos\editor_data.trig"));
                 }
@@ -2370,6 +2453,7 @@ namespace Ajan
             request.AddHeader("Content-Type", "text/turtle");
             request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"Created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
+            Console.WriteLine("creating dummy knowledge request response:");
             Console.WriteLine(response.Content);
 
              
@@ -2396,18 +2480,22 @@ namespace Ajan
             request.AddHeader("Content-Type", "text/turtle");
             request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"Created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
+            Console.WriteLine("creating node definiton request response:");
+
             Console.WriteLine(response.Content);
 
 
-
+            if (!response.Content.Contains("REPOSITORY EXISTS")) { 
             var client2 = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}/statements");
             client2.Timeout = -1;
             var request2 = new RestRequest(Method.PUT);
             request2.AddHeader("Content-Type", "text/turtle");
             request2.AddParameter("text/turtle", data, ParameterType.RequestBody);
             IRestResponse response2 = client2.Execute(request2);
-            Console.WriteLine(response2.Content);
+            Console.WriteLine("adding statements to node definition request response:");
 
+            Console.WriteLine(response2.Content);
+            }
         }
 
         private void createRepoEditor_Data()
@@ -2424,20 +2512,25 @@ namespace Ajan
             var client = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}");
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
-            request.AddHeader("Content-Type", "text/turtle");
-            request.AddParameter("text/turtle", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"Created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/trig");
+            request.AddParameter("application/trig", $"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n@prefix rep: <http://www.openrdf.org/config/repository#>.\r\n@prefix sr: <http://www.openrdf.org/config/repository/sail#>.\r\n@prefix sail: <http://www.openrdf.org/config/sail#>.\r\n@prefix ms: <http://www.openrdf.org/config/sail/memory#>.\r\n\r\n[] a rep:Repository ;\r\n   rep:repositoryID \"{repoName}\" ;\r\n   rdfs:label \"Created on {now}\" ;\r\n   rep:repositoryImpl [\r\n      rep:repositoryType \"openrdf:SailRepository\" ;\r\n      sr:sailImpl [\r\n\t sail:sailType \"openrdf:NativeStore\" ;\r\n\t ms:persist true ;\r\n\t ms:syncDelay 120\r\n      ]\r\n   ].", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
+            Console.WriteLine("creating editor data request response:");
             Console.WriteLine(response.Content);
 
 
+            if (!response.Content.Contains("REPOSITORY EXISTS"))
+            {
+                var client2 = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}/statements");
+                client2.Timeout = -1;
+                var request2 = new RestRequest(Method.PUT);
+                request2.AddHeader("Content-Type", "application/trig");
+                request2.AddParameter("application/trig", data, ParameterType.RequestBody);
+                IRestResponse response2 = client2.Execute(request2);
+                Console.WriteLine("adding statements to editor data request response:");
 
-            var client2 = new RestClient($"http://localhost:8090/rdf4j/repositories/{repoName}/statements");
-            client2.Timeout = -1;
-            var request2 = new RestRequest(Method.PUT);
-            request2.AddHeader("Content-Type", "text/turtle");
-            request2.AddParameter("text/turtle", data, ParameterType.RequestBody);
-            IRestResponse response2 = client2.Execute(request2);
-            Console.WriteLine(response2.Content);
+                Console.WriteLine(response2.Content);
+            }
         }
 
 
@@ -2591,7 +2684,8 @@ namespace Ajan
                     Console.WriteLine(outLine.Data);
                     this.Dispatcher.Invoke(() =>
                     {
-                        setupProgressBar.Value += 100.0 / 712; // Math.Round(100.0 / 66);
+                     
+                        setupProgressBar.Value = Math.Min(95, setupProgressBar.Value + 1);
                         ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
 
                         if (!String.IsNullOrEmpty(outLine.Data) && !outLine.Data.Contains("--------"))
@@ -2675,7 +2769,8 @@ namespace Ajan
                         createRepoEditor_Data();
                         modifyConfig(BUILD_DONE, "true");
                         //loadingGif.Visibility = Visibility.Hidden;
-                        config_btn.Content = "       Reset       ";
+                        updateBuildButton();
+
                         Console.WriteLine("AJAN EDITOR installed successfully !"); oneLinerLogLabel.Content = "AJAN EDITOR installed successfully !";
                         setupProgressBar.Value = 100; ProgressBarPercent.Content = Math.Round(setupProgressBar.Value).ToString() + "%";
                     });
@@ -2694,7 +2789,7 @@ namespace Ajan
                             {
 
                                 Console.WriteLine(setupProgressBar.Value);
-                                setupProgressBar.Value = Math.Min(99, setupProgressBar.Value + 100 / 20);
+                                setupProgressBar.Value = Math.Min(95, setupProgressBar.Value + 100 / 20);
                                 ProgressBarPercent.Content = setupProgressBar.Value.ToString() + "%";
                                 oneLinerLogLabel.Content = outLine.Data.Substring(0, Math.Min(outLine.Data.Length, 120)) + "...  ";
                             }
